@@ -1,0 +1,18 @@
+# --- Core libraries ---
+pandas
+python-dateutil
+requests
+python-dotenv
+
+# --- Azure OpenAI SDK ---
+openai>=1.0.0
+
+# --- Database (Supabase) ---
+supabase
+
+# --- Machine learning (Prophet for forecasting) ---
+prophet
+cmdstanpy<1.2.0   # Prophet内部依存関係の互換性確保
+
+# --- Optional utilities ---
+tqdm
