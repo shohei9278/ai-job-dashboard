@@ -1,0 +1,11 @@
+### インポートテスト
+POST http://localhost:8080/api/jobs/import
+Content-Type: application/json
+
+### エクスポートテスト
+GET http://localhost:8080/api/jobs
+Content-Type: application/json
+
+### エクスポートテスト
+GET http://localhost:8080/api/trends
+Content-Type: application/json
