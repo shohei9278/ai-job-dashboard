@@ -1,0 +1,26 @@
+# --- Node modules ---
+node_modules/
+
+# --- Vite build output ---
+dist/
+build/
+
+# --- Environment files ---
+.env
+.env.local
+.env.development.local
+.env.production.local
+
+# --- IDE & system ---
+.vscode/
+.idea/
+.DS_Store
+
+# --- Coverage / test output ---
+coverage/
+*.lcov
+
+# --- Misc ---
+*.log
+*.tmp
+*.bak
