@@ -1,7 +1,7 @@
 # AI求人ダッシュボード
 
 - フロントエンド（Vercel）
-  [https://ai-job-dashboard-plum.vercel.app/](https://ai-job-dashboard-plum.vercel.app/)
+  [https://ai-job-dashboard-plum.vercel.app](https://ai-job-dashboard-plum.vercel.app/)
 
 - バックエンド（Render / REST API）
   [https://ai-job-dashboard-ztxo.onrender.com](https://ai-job-dashboard-ztxo.onrender.com)
