@@ -1,57 +1,60 @@
 # AI求人ダッシュボード
 
-**バージョン：v1.0.0（初期公開版）**  
-※ 一部機能はデモ目的で静的データを使用している部分があります。  
-
-**デモサイト**  
-- フロントエンド: [https://ai-job-dashboard-plum.vercel.app](https://ai-job-dashboard-plum.vercel.app/)  
-- バックエンドAPI: [https://ai-job-dashboard-ztxo.onrender.com](https://ai-job-dashboard-ztxo.onrender.com/)  
+**バージョン:** v1.0.0（公開中）  
+AIと機械学習を活用して、求人データを自動収集・分析・可視化するフルスタックWebアプリケーションです。  
+GitHub Actionsによる定期実行で最新データを自動更新しています。
 
 ---
 
-## システム構成図
+## デモサイト
 
-
-```mermaid
-graph TD
-G["GitHub Actions<br/>(定期実行)"]
-    --> A["Python<br/>(スクレイピング・機械学習・AI要約)"]
-  A -->|データ挿入| B["Supabase<br/>(PostgreSQL)"]
-  B -->|クエリ| C["Backend<br/>(Express + Render)"]
-  C -->|APIレスポンス| D["Frontend<br/>(React + Vercel)"]
-
-```
+- フロントエンド（Vercel）  
+  [https://ai-job-dashboard-plum.vercel.app](https://ai-job-dashboard-plum.vercel.app ) 
+- バックエンド（Render / REST API）  
+  [https://ai-job-dashboard-ztxo.onrender.com](https://ai-job-dashboard-ztxo.onrender.com/)
 
 ---
 
 ## プロジェクト概要
 
-このアプリケーションは「求人情報 × AI分析」をテーマにしたデータ分析ダッシュボードです。  
-Pythonで求人情報をスクレイピングし、Supabaseに格納。  
-機械学習を活用して求人データの傾向を分析し、
-OpenAI APIで要約・スキル抽出を行い、Reactで構築したダッシュボード上に可視化します。
+本アプリケーションは「求人情報 × AI分析」をテーマに開発したWebダッシュボードです。  
+Pythonで求人データを収集・整形し、機械学習を用いてトレンドや異常を自動検知。  
+OpenAI APIで求人内容を要約・スキル抽出し、Reactダッシュボードで可視化します。
 
-| 機能 | 概要 |
+| 機能 | 内容 |
 |------|------|
-| 求人スクレイピング | PythonでIndeedやGreenなどから求人情報を自動収集 |
-| AI要約・スキル抽出 | Azure  OpenAI APIを用いて職種情報を自動要約・スキル分類 |
-| トレンド分析 | 職種別・スキル別に時系列グラフで傾向を可視化 |
-| データベース連携 | Supabaseを使用したデータ永続化とAPI提供 |
-| ダッシュボードUI | TailwindCSSとRechartsによるレスポンシブグラフ表示 |
+| 求人スクレイピング | Pythonによる自動収集（定期実行） |
+| AI要約・スキル抽出 | OpenAI APIを用いた自然言語処理 |
+| 機械学習分析 | Prophet・scikit-learnによるトレンド予測・異常検知 |
+| トレンド可視化 | Rechartsを使用したグラフ表示 |
+| 自動更新 | GitHub Actionsにより毎日最新化 |
 
 ---
 
 ## 技術構成
 
-| 分類 | 使用技術 |
+| 区分 | 使用技術 |
 |------|-----------|
-| フロントエンド | React, TypeScript, Vite, TailwindCSS |
-| バックエンド | Node.js (Express), TypeScript, ts-node |
+| フロントエンド | React, TypeScript, TailwindCSS |
+| バックエンド | Node.js (Express), TypeScript |
 | データベース | Supabase (PostgreSQL) |
-| AI / LLM | Azure OpenAI API (GPT-4) |
-| データ分析 | Python, BeautifulSoup, pandas |
-| デプロイ | Vercel（フロントエンド）, Render（バックエンド） |
-| 環境管理 | dotenv, .env, GitHub Actions |
+| AI / LLM | OpenAI API (GPT-4) |
+| 機械学習 | Python, Prophet, scikit-learn |
+| 自動実行 | GitHub Actions |
+| デプロイ | Vercel（Frontend）, Render（Backend） |
+
+---
+
+## システム構成図
+
+```mermaid
+graph TD
+  G["GitHub Actions<br/>(定期実行)"]
+    --> A["Python<br/>(スクレイピング・機械学習・AI要約)"]
+  A -->|データ挿入| B["Supabase<br/>(PostgreSQL)"]
+  B -->|クエリ| C["Backend<br/>(Express + Render)"]
+  C -->|APIレスポンス| D["Frontend<br/>(React + Vercel)"]
+```
 
 ---
 
@@ -69,35 +72,50 @@ ai-job-dashboard/
 │   │   │   └── trends.ts
 │   │   └── db.ts
 │   └── .env
-└── analysis/          # Pythonスクリプト (データ収集・解析・機械学習)
+└── analysis/          # Pythonスクリプト (データ収集・解析)
     ├── scrape_jobs.py
     ├── summarize_jobs.py
-    └── trend_score
+    ├── trend_forecast.py
+    └── anomaly_detect.py
 </code></pre>
 
 ---
 
-## コメント
+## 環境変数
 
-このアプリは「AI × 自動化 × 可視化」をテーマに、
-求人情報の収集から分析・可視化までを一貫して自動化することを目的として開発しました。
-SupabaseやOpenAIなどの最新ツールを活用し、
-フロントエンドからバックエンド、データ分析まで全てをTypeScriptとPythonで構築しています。
+### Backend (.env)
+```
+SUPABASE_URL=https://xxxx.supabase.co
+SUPABASE_SERVICE_KEY=xxxx
+OPENAI_API_KEY=sk-xxxx
+```
 
----
-
-## 今後のアップデート予定
-
-[ ]異常検知
-
-[ ]Supabaseトリガーによる自動再集計
-
-[ ]PDFまたはCSVへのエクスポート機能
-
-[ ]トレンドグラフの動的フィルタリング（期間・スキル別）
-
-[ ]UIの調整
-
+### Frontend (.env)
+```
+VITE_API_URL=https://ai-job-dashboard-ztxo.onrender.com
+```
 
 ---
 
+## 今後の展望
+
+- 機械学習モデルによる求人トレンド予測の精度向上  
+- 異常検知アルゴリズムの強化と自動レポート化  
+- ユーザー認証機能（Supabase Auth）追加  
+- グラフの期間・スキル別フィルタリング  
+- PDF / CSV形式でのレポート出力対応  
+
+---
+
+## 作者コメント
+
+このアプリは「AI × 自動化 × 可視化」をテーマに、  
+求人市場の動きを定量的に把握するために開発しました。  
+フロントエンドからバックエンド、機械学習まで一貫して設計しており、  
+自動更新・異常検知・LLM要約を組み合わせた構成を意識しています。
+
+---
+
+## ライセンス
+
+MIT License © 2025 Shohei Nakahara
