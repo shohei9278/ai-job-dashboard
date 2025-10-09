@@ -68,9 +68,9 @@ ai-job-dashboard/
 │ │ │ └── trends.ts
 │ │ └── db.ts
 │ └── .env
-└── analysis/ # Pythonスクリプト (データ収集・解析)
+└── analysis/ # Pythonスクリプト (データ収集・解析・機械学習)
 ├── scrape_jobs.py
-├── summarize_jobs.py
+├── trend_score.py
 └── trend_forecast.py
 
 
@@ -91,11 +91,12 @@ VITE_API_URL= [https://ai-job-dashboard-ztxo.onrender.com](https://ai-job-dashbo
 
 ```mermaid
 graph TD
-  A["Frontend<br/>(React + Vercel)"]
-    -->|fetch| B["Backend<br/>(Express + Render)"]
-  B -->|query| C["Supabase<br/>(DB)"]
-  B -->|analyze| D["OpenAI<br/>(GPT-4 API)"]
-  C --> E["Python<br/>(スクレイピング・分析)"]
+G["GitHub Actions<br/>(定期実行)"]
+    --> A["Python<br/>(スクレイピング・AI要約)"]
+  A -->|データ挿入| B["Supabase<br/>(PostgreSQL)"]
+  B -->|クエリ| C["Backend<br/>(Express + Render)"]
+  C -->|APIレスポンス| D["Frontend<br/>(React + Vercel)"]
+
 ```
 
 ---
