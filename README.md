@@ -1,5 +1,12 @@
 # AI求人ダッシュボード
 
+- フロントエンド（Vercel）
+  [https://ai-job-dashboard-plum.vercel.app/](https://ai-job-dashboard-plum.vercel.app/)
+
+- バックエンド（Render / REST API）
+  [https://ai-job-dashboard-ztxo.onrender.com](https://ai-job-dashboard-ztxo.onrender.com)
+  
+
 AIと自動化技術を活用して、求人データを収集・分析・可視化するフルスタックWebアプリケーションです。  
 React + TypeScript + Supabase + OpenAI を組み合わせ、求人トレンドやスキル傾向を自動算出・可視化できる仕組みを構築しました。
 毎朝10時に求人データが自動収集され、ダッシュボードに反映されます。※現状一部ダミーデータが入っております。
@@ -11,17 +18,6 @@ React + TypeScript + Supabase + OpenAI を組み合わせ、求人トレンド�
 - **公開日:** 2025年10月9日 
 
 本バージョンは、AI求人分析ダッシュボードの **初期公開版（プロトタイプ）** です。  
-
----
-
-## デモURL
-
-- フロントエンド（Vercel）
-  [https://ai-job-dashboard-plum.vercel.app/](https://ai-job-dashboard-plum.vercel.app/)
-
-- バックエンド（Render / REST API）
-  [https://ai-job-dashboard-ztxo.onrender.com/api/jobs](https://ai-job-dashboard-ztxo.onrender.com/api/jobs)
- 
 
 ---
 
