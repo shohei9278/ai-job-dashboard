@@ -68,21 +68,11 @@ ai-job-dashboard/
 │ │ │ └── trends.ts
 │ │ └── db.ts
 │ └── .env
-└── analysis/ # Pythonスクリプト (データ収集・解析・機械学習)
+└── analysis/ # Pythonスクリプト (データ収集・解析)
 ├── scrape_jobs.py
-├── trend_score.py
+├── summarize_jobs.py
 └── trend_forecast.py
 
-
-## 環境変数
-
-### Backend (.env)
-SUPABASE_URL=https://xxxx.supabase.co
-SUPABASE_SERVICE_KEY=xxxx
-OPENAI_API_KEY=sk-xxxx
-
-### Frontend (.env)
-VITE_API_URL= [https://ai-job-dashboard-ztxo.onrender.com](https://ai-job-dashboard-ztxo.onrender.com)
 
 ---
 
