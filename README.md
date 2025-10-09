@@ -2,7 +2,6 @@
 
 **バージョン：v1.0.0（初期公開版）**  
 ※ 一部機能はデモ目的で静的データを使用している部分があります。  
-→ 常時更新や異常検知機能は今後対応予定。
 
 **デモサイト**  
 - フロントエンド: [https://ai-job-dashboard-plum.vercel.app](https://ai-job-dashboard-plum.vercel.app/)  
