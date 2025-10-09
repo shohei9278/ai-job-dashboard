@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import {
   LineChart,
   Line,
@@ -14,10 +14,12 @@ export default function JobTrendForecastChart() {
   const [forecastData, setForecastData] = useState<any[]>([]);
   const [aiComment, setAiComment] = useState<string>("");
 
+  const API_URL = import.meta.env.VITE_API_URL;
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const forecastRes = await fetch("http://localhost:8080/api/trends/forecast");
+        
+        const forecastRes = await fetch(`${API_URL}/api/trends/forecast`);
         const forecastJson = await forecastRes.json();
 
         const forecast = forecastJson.map((d: any) => ({
@@ -35,7 +37,8 @@ export default function JobTrendForecastChart() {
 
     const fetchComment = async () => {
       try {
-        const res = await fetch("http://localhost:8080/api/trends/insight");
+        
+        const res = await fetch(`${API_URL}/api/trends/insight`);
         const json = await res.json();
         setAiComment(json.data[0].summary || "コメント生成中...");
       } catch {
@@ -48,11 +51,11 @@ export default function JobTrendForecastChart() {
   }, []);
 
   return (
-    <div className="bg-white p-6 overflow-visible">
+    <div className="bg-white overflow-visible">
       <ResponsiveContainer width="100%" height={400}>
         <LineChart
           data={forecastData}
-          margin={{ top: 20, right: 40, left: 50, bottom: 50 }} 
+          margin={{ top: 20, right: 10, left: 0, bottom: 50 }} 
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#ddd" />
           <XAxis

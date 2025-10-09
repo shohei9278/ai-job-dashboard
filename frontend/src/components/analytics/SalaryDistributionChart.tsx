@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useContext } from "react";
+import { useEffect, useState,useContext } from "react";
 import { JobsContext } from "../../pages/Dashboard";
 import {
   BarChart,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { JobsContext } from "../../pages/Dashboard";
 import {
   BarChart,
@@ -59,7 +59,7 @@ export default function SkillRankingChart() {
   ];
 
   return (
-    <div className="bg-white p-4 ">
+    <div className="bg-white">
 
 
       {loading ? (
@@ -71,7 +71,7 @@ export default function SkillRankingChart() {
           <BarChart
             data={data}
             layout="vertical"
-            margin={{ top: 10, right: 20, left: 80, bottom: 10 }}
+            margin={{ top: 10, right: 20, left: 50, bottom: 10 }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
             <XAxis

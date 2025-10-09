@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { useEffect, useState } from "react";
+
 
 
 
 export default function SkillTrendRank() {
   const [skills, setSkills] = useState([]);
-useEffect(() => {
-  fetch("http://localhost:8080/api/trends/skill")
+
+  const API_URL = import.meta.env.VITE_API_URL;
+  
+  useEffect(() => {
+     fetch(`${API_URL}/api/trends/skill`)
     .then(res => res.json())
     .then(data => setSkills(data))
     .catch(err => console.error("Trend fetch error:", err));

@@ -1,10 +1,5 @@
 import { Router } from "express";
-import { supabase } from "../db.js";
-import OpenAI from "openai";
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+import { supabase } from "../db";
 
 const router = Router();
 
@@ -88,7 +83,7 @@ router.get("/actual", async (req, res) => {
     }
 
     // 日ごとに求人数を集計
-    const grouped = data.reduce((acc:any, row) => {
+    const grouped = data.reduce((acc:any, row: any) => {
       const date = row.collected_date;
       acc[date] = (acc[date] || 0) + (row.job_count || 0);
       return acc;
@@ -130,7 +125,7 @@ router.get("/forecast", async (req, res) => {
     }
 
     // 今日より未来のデータのみ取得
-    const upcoming = data.filter((row) => new Date(row.date) > today);
+    const upcoming = data.filter((row: any) => new Date(row.date) > today);
 
     // //7日先まで
     // const next7days = upcoming.slice(0, 7);
@@ -179,7 +174,7 @@ router.get("/:prefecture", async (req, res) => {
       return res.status(500).json({ error: error.message });
     }
 
-    const formatted = data.map((row) => ({
+    const formatted = data.map((row: any) => ({
       collected_date: row.collected_date,
       total_jobs: row.job_count,
     }));

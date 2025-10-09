@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useContext } from "react";
+import { useEffect, useState,useContext } from "react";
 import { JobsContext } from "../../pages/Dashboard";
 import {
   LineChart,
@@ -52,7 +52,7 @@ export default function SkillTrendChart() {
   }, [selectedSkills,jobs]);
 
   return (
-    <div className="bg-white  p-4">
+    <div className="bg-white">
  
 
       <ResponsiveContainer width="100%" height={350}>

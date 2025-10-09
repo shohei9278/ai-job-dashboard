@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createContext } from "react";
+import { useEffect, useState, createContext } from "react";
 
 
 import SkillSalaryChart from "../components/analytics/SkillSalaryChart";
@@ -19,9 +19,10 @@ export const JobsContext = createContext<any[]>([]);
 export default function Dashboard() {
   const [jobs, setJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const API_URL = import.meta.env.VITE_API_URL;
   
     useEffect(() => {
-      fetch("http://localhost:8080/api/jobs")
+      fetch(`${API_URL}/api/jobs`)
         .then((res) => res.json())
         .then((data) => {
           setJobs(data);
@@ -29,14 +30,25 @@ export default function Dashboard() {
         })
         .catch((err) => {
           console.error("Failed to fetch jobs:", err);
-          setLoading(false);
+           setLoading(false);
         });
     }, []);
   
   return (
+
+    
+
+    
     <div className="min-h-screen bg-gray-100">
 
-      <JobsContext.Provider value={jobs}>
+      {loading ? (
+       <div className="fixed inset-0 flex flex-col items-center justify-center bg-black/50 text-white z-50">
+      <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin mb-4"></div>
+      <p className="text-lg font-semibold tracking-wide">読み込み中...</p>
+    </div>
+      )  : (
+            
+            <JobsContext.Provider value={jobs}>
 
          <div className="bg-gray-50 min-h-screen p-4 sm:p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
@@ -101,6 +113,10 @@ export default function Dashboard() {
       </div>
     </div>
       </JobsContext.Provider>
+      )}
+
+
+      
      
      
     </div>

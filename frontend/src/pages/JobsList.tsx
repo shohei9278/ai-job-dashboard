@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
-const API_URL = "http://localhost:8080/api/jobs";
+const API_URL = import.meta.env.VITE_API_URL;
 
 interface JobsListProps {
   selectedSkill?: string | null;
@@ -31,7 +31,7 @@ export default function JobsList({
       if (skill) params.append("skill", skill);
       if (location) params.append("location", location);
 
-      const res = await fetch(`${API_URL}?${params.toString()}`);
+      const res = await fetch(`${API_URL}/api/jobs?${params.toString()}`);
       const data = await res.json();
 
       const normalized = data.map((job: any) => ({
