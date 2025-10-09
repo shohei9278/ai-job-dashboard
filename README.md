@@ -1,23 +1,27 @@
-# AI求人ダッシュボード
+ AI求人ダッシュボード
 
-- フロントエンド（Vercel）
-  [https://ai-job-dashboard-plum.vercel.app](https://ai-job-dashboard-plum.vercel.app/)
+**バージョン：v1.0.0（初期公開版）**  
+※ 一部機能はデモ目的で静的データを使用している部分があります。  
+→ 常時更新や異常検知機能は今後対応予定。
 
-- バックエンド（Render / REST API）
-  [https://ai-job-dashboard-ztxo.onrender.com](https://ai-job-dashboard-ztxo.onrender.com)
-  
-
-AIと自動化技術を活用して、求人データを収集・分析・可視化するフルスタックWebアプリケーションです。  
-React + TypeScript + Supabase + OpenAI を組み合わせ、求人トレンドやスキル傾向を自動算出・可視化できる仕組みを構築しました。
-毎朝10時に求人データが自動収集され、ダッシュボードに反映されます。※現状一部ダミーデータが入っております。
+**デモサイト**  
+- フロントエンド: https://ai-job-dashboard-frontend.vercel.app  
+- バックエンドAPI: https://ai-job-dashboard-backend.onrender.com/jobs  
 
 ---
-## バージョン情報
 
-**バージョン:** v1.0.0  
-- **公開日:** 2025年10月9日 
+## システム構成図
 
-本バージョンは、AI求人分析ダッシュボードの **初期公開版（プロトタイプ）** です。  
+
+```mermaid
+graph TD
+G["GitHub Actions<br/>(定期実行)"]
+    --> A["Python<br/>(スクレイピング・機械学習・AI要約)"]
+  A -->|データ挿入| B["Supabase<br/>(PostgreSQL)"]
+  B -->|クエリ| C["Backend<br/>(Express + Render)"]
+  C -->|APIレスポンス| D["Frontend<br/>(React + Vercel)"]
+
+```
 
 ---
 
@@ -71,21 +75,6 @@ ai-job-dashboard/
     ├── summarize_jobs.py
     └── trend_score
 </code></pre>
-
----
-
-## システム構成図
-
-
-```mermaid
-graph TD
-G["GitHub Actions<br/>(定期実行)"]
-    --> A["Python<br/>(スクレイピング・AI要約)"]
-  A -->|データ挿入| B["Supabase<br/>(PostgreSQL)"]
-  B -->|クエリ| C["Backend<br/>(Express + Render)"]
-  C -->|APIレスポンス| D["Frontend<br/>(React + Vercel)"]
-
-```
 
 ---
 
