@@ -5,8 +5,8 @@
 → 常時更新や異常検知機能は今後対応予定。
 
 **デモサイト**  
-- フロントエンド: https://ai-job-dashboard-frontend.vercel.app  
-- バックエンドAPI: https://ai-job-dashboard-backend.onrender.com/jobs  
+- フロントエンド: [https://ai-job-dashboard-frontend.vercel.app](https://ai-job-dashboard-plum.vercel.app/)  
+- バックエンドAPI: [https://ai-job-dashboard-backend.onrender.com/jobs](https://ai-job-dashboard-ztxo.onrender.com/)  
 
 ---
 
