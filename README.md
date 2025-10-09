@@ -8,10 +8,11 @@ React + TypeScript + Supabase + OpenAI を組み合わせ、求人トレンド�
 ## デモURL
 
 - フロントエンド（Vercel）  
-  https://ai-job-dashboard-plum.vercel.app/
+  [https://ai-job-dashboard-plum.vercel.app/](https://ai-job-dashboard-plum.vercel.app/)
 
-- バックエンド（Render / REST API）  
-  https://ai-job-dashboard-ztxo.onrender.com/
+- バックエンド（Render / REST API）
+  [https://ai-job-dashboard-ztxo.onrender.com/api/jobs](https://ai-job-dashboard-ztxo.onrender.com/api/jobs)
+ 
 
 ---
 
@@ -72,18 +73,20 @@ SUPABASE_SERVICE_KEY=xxxx
 OPENAI_API_KEY=sk-xxxx
 
 ### Frontend (.env)
-VITE_API_URL=https://ai-job-dashboard-backend.onrender.com
+VITE_API_URL= [https://ai-job-dashboard-ztxo.onrender.com](https://ai-job-dashboard-ztxo.onrender.com)
 
 ---
 
 ## システム構成図
 
+```md
 ```mermaid
 graph TD
-  A[Frontend - React (Vercel)] -->|fetch| B[Backend - Express (Render)]
-  B -->|query| C[Supabase - DB]
-  B -->|analyze| D[OpenAI API]
-  C --> E[Python - scrape_jobs.py]
+  A["Frontend<br/>(React + Vercel)"]
+    -->|fetch| B["Backend<br/>(Express + Render)"]
+  B -->|query| C["Supabase<br/>(DB)"]
+  B -->|analyze| D["OpenAI<br/>(GPT-4 API)"]
+  C --> E["Python<br/>(スクレイピング・分析)"]
 
 
 作者コメント
