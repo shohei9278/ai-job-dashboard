@@ -38,7 +38,7 @@ OpenAI APIで求人内容を要約・スキル抽出し、Reactダッシュボ�
 | フロントエンド | React, TypeScript, TailwindCSS |
 | バックエンド | Node.js (Express), TypeScript |
 | データベース | Supabase (PostgreSQL) |
-| AI / LLM | OpenAI API (GPT-4) |
+| AI / LLM | Azure OpenAI API (gpt-4o-mini) |
 | 機械学習 | Python, Prophet, scikit-learn |
 | 自動実行 | GitHub Actions |
 | デプロイ | Vercel（Frontend）, Render（Backend） |
