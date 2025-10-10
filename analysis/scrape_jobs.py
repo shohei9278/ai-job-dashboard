@@ -358,7 +358,7 @@ if __name__ == "__main__":
                     insert_job_count(row["location"],row["count"],today)
                     time.sleep(3)
                 except Exception as e:
-                    print(f"{row["location"]} でエラー: {e}")
+                    print(f"{row['location']} でエラー: {e}")
                     time.sleep(5)
             
    
