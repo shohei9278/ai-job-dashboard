@@ -13,6 +13,13 @@ import JobTrendForecastChart from "../components/analytics/JobTrendForecastChart
 import LocationChart from "../components/analytics/LocationChart";
 import Card from "../components/common/Card";
 
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+
 export const JobsContext = createContext<any[]>([]);
 
 
@@ -22,10 +29,19 @@ export default function Dashboard() {
   const API_URL = import.meta.env.VITE_API_URL;
   
     useEffect(() => {
-      fetch(`${API_URL}/api/jobs`)
+      fetch(`${API_URL}/jobs`)
         .then((res) => res.json())
         .then((data) => {
-          setJobs(data);
+          const normalized = data.map((job: any) => ({
+        ...job,
+        id: Number(job.id),            
+        salary: job.salary ? Number(job.salary) : null, 
+        collected_date: job.collected_date
+    ? dayjs(job.collected_date).tz('Asia/Tokyo').format('YYYY/MM/DD')
+    : null,
+      }));
+          
+          setJobs(normalized);
           setLoading(false);
         })
         .catch((err) => {

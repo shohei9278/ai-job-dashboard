@@ -11,6 +11,13 @@ import {
   Legend,
 } from "recharts";
 
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+
 type TrendPoint = { collected_date: string; total_jobs: number };
 
 export default function JobTrendChart() {
@@ -19,16 +26,27 @@ export default function JobTrendChart() {
   const [aiComment, setAiComment] = useState<string>("");
   const API_URL = import.meta.env.VITE_API_URL;
   useEffect(() => {
-    fetch(`${API_URL}/api/trends/actual`)
+    fetch(`${API_URL}/trends/actual`)
       .then((res) => res.json())
-      .then((data) => setData(data))
+      .then((data) => {
+
+        const normalized = data.map((actual: any) => ({
+                ...actual,
+                collected_date: actual.collected_date
+            ? dayjs(actual.collected_date).tz('Asia/Tokyo').format('YYYY/MM/DD')
+            : null,
+        }));
+        
+        setData(normalized)
+      }
+    )
       .catch((err) => console.error("Trend fetch error:", err));
     
     const fetchComment = async () => {
       try {
-        const res = await  fetch(`${API_URL}/api/trends/summary`);
+        const res = await fetch(`${API_URL}/trends/summary`);
         const json = await res.json();
-        setAiComment(json.data[0].summary || "コメント生成中...");
+        setAiComment(json[0].summary || "コメント生成中...");
       } catch {
         setAiComment("コメントの取得に失敗しました。");
       }

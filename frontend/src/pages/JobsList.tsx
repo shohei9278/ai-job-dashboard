@@ -31,7 +31,7 @@ export default function JobsList({
       if (skill) params.append("skill", skill);
       if (location) params.append("location", location);
 
-      const res = await fetch(`${API_URL}/api/jobs?${params.toString()}`);
+      const res = await fetch(`${API_URL}/jobs?${params.toString()}`);
       const data = await res.json();
 
       const normalized = data.map((job: any) => ({

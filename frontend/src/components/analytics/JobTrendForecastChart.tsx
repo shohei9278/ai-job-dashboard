@@ -9,6 +9,12 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 
 export default function JobTrendForecastChart() {
   const [forecastData, setForecastData] = useState<any[]>([]);
@@ -19,11 +25,11 @@ export default function JobTrendForecastChart() {
     const fetchData = async () => {
       try {
         
-        const forecastRes = await fetch(`${API_URL}/api/trends/forecast`);
+        const forecastRes = await fetch(`${API_URL}/trends/forecast`);
         const forecastJson = await forecastRes.json();
 
         const forecast = forecastJson.map((d: any) => ({
-          date: d.date,
+          date: dayjs(d.date).tz('Asia/Tokyo').format('YYYY/MM/DD'),
           forecast: d.predicted_count,
           lower: d.lower_bound,
           upper: d.upper_bound,
@@ -38,9 +44,9 @@ export default function JobTrendForecastChart() {
     const fetchComment = async () => {
       try {
         
-        const res = await fetch(`${API_URL}/api/trends/insight`);
+        const res = await fetch(`${API_URL}/trends/insight`);
         const json = await res.json();
-        setAiComment(json.data[0].summary || "コメント生成中...");
+        setAiComment(json[0].summary || "コメント生成中...");
       } catch {
         setAiComment("コメントの取得に失敗しました。");
       }

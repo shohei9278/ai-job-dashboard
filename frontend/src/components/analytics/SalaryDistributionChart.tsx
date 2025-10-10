@@ -18,6 +18,7 @@ export default function SalaryDistributionChart() {
   const jobs = useContext(JobsContext);
 
   useEffect(() => {
+    
     const salaries = jobs
           .filter((job: any) => typeof job.salary === "number" && job.salary > 0)
           .map((job: any) => Math.round(job.salary / 10000));
