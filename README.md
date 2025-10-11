@@ -1,121 +1,134 @@
-# AI求人ダッシュボード
+# AI Job Dashboard
 
-**バージョン:** v1.0.0（公開中）  
-AIと機械学習を活用して、求人データを自動収集・分析・可視化するフルスタックWebアプリケーションです。  
-GitHub Actionsによる定期実行で最新データを自動更新しています。
-
----
-
-## デモサイト
-
-- フロントエンド（Vercel）  
-  [https://ai-job-dashboard-plum.vercel.app](https://ai-job-dashboard-plum.vercel.app ) 
-- バックエンド（Render / REST API）  
-  [https://ai-job-dashboard-ztxo.onrender.com](https://ai-job-dashboard-ztxo.onrender.com/)
+AI を活用して求人データを収集・分析し、トレンドを可視化するダッシュボードアプリケーションです。  
+バックエンドは NestJS + Prisma、フロントエンドは React + TailwindCSS により構築されています。
 
 ---
 
-## プロジェクト概要
+## 概要
 
-本アプリケーションは「求人情報 × AI分析」をテーマに開発したWebダッシュボードです。  
-Pythonで求人データを収集・整形し、機械学習を用いてトレンドや異常を自動検知。  
-OpenAI APIで求人内容を要約・スキル抽出し、Reactダッシュボードで可視化します。
-
-| 機能 | 内容 |
-|------|------|
-| 求人スクレイピング | Pythonによる自動収集（定期実行） |
-| AI要約・スキル抽出 | OpenAI APIを用いた自然言語処理 |
-| 機械学習分析 | Prophet・scikit-learnによるトレンド予測・異常検知 |
-| トレンド可視化 | Rechartsを使用したグラフ表示 |
-| 自動更新 | GitHub Actionsにより毎日最新化 |
+- 求人情報のスクレイピングと自動分析
+- 求人数推移・スキルトレンドなどの可視化
+- Supabase (PostgreSQL) を利用したデータ管理
+- フロントエンドからバックエンドへの API 連携済み
+- Render（API）および Vercel（UI）にデプロイ済み
 
 ---
 
 ## 技術構成
 
-| 区分 | 使用技術 |
-|------|-----------|
-| フロントエンド | React, TypeScript, TailwindCSS |
-| バックエンド | Node.js (Express), TypeScript |
-| データベース | Supabase (PostgreSQL) |
-| AI / LLM | Azure OpenAI API (gpt-4o-mini) |
-| 機械学習 | Python, Prophet, scikit-learn |
-| 自動実行 | GitHub Actions |
-| デプロイ | Vercel（Frontend）, Render（Backend） |
+| レイヤー | 使用技術 |
+|----------|-----------|
+| フロントエンド | React, Vite, TailwindCSS |
+| バックエンド | NestJS, TypeScript, Prisma |
+| データベース | PostgreSQL（Supabase） |
+| デプロイ | Render（バックエンド）, Vercel（フロントエンド） |
+| 分析スクリプト | Python（スクレイピング・トレンド分析） |
 
 ---
 
-## システム構成図
+## 公開 URL
 
-```mermaid
-graph TD
-  G["GitHub Actions<br/>(定期実行)"]
-    --> A["Python<br/>(スクレイピング・機械学習・AI要約)"]
-  A -->|データ挿入| B["Supabase<br/>(PostgreSQL)"]
-  B -->|クエリ| C["Backend<br/>(Express + Render)"]
-  C -->|APIレスポンス| D["Frontend<br/>(React + Vercel)"]
-```
+- フロントエンド: [https://ai-job-dashboard-plum.vercel.app/](https://ai-job-dashboard-plum.vercel.app/)
+- バックエンド API: [https://ai-job-dashboard-nestjs.onrender.com/](https://ai-job-dashboard-nestjs.onrender.com/)
 
 ---
 
 ## ディレクトリ構成
 
-<pre><code>
+```
 ai-job-dashboard/
-├── frontend/          # React + Tailwind (UI)
+├── frontend/                # React + Tailwind (UI)
 │   ├── src/
+│   ├── public/
 │   └── .env
-├── backend/           # Express + TypeScript (API)
+│
+├── backend-nest/            # NestJS + Prisma (API)
 │   ├── src/
-│   │   ├── routes/
-│   │   │   ├── jobs.ts
-│   │   │   └── trends.ts
-│   │   └── db.ts
+│   │   ├── prisma/
+│   │   ├── jobs/
+│   │   ├── trends/
+│   │   ├── app.module.ts
+│   │   ├── app.controller.ts
+│   │   ├── app.service.ts
+│   │   └── main.ts
+│   ├── prisma/
+│   │   └── schema.prisma
 │   └── .env
-└── analysis/          # Pythonスクリプト (データ収集・解析)
+│
+└── analysis/                # Pythonスクリプト（スクレイピング・分析）
     ├── scrape_jobs.py
     ├── summarize_jobs.py
-    ├── trend_forecast.py
-    └── anomaly_detect.py
-</code></pre>
-
----
-
-## 環境変数
-
-### Backend (.env)
-```
-SUPABASE_URL=https://xxxx.supabase.co
-SUPABASE_SERVICE_KEY=xxxx
-OPENAI_API_KEY=sk-xxxx
-```
-
-### Frontend (.env)
-```
-VITE_API_URL=https://ai-job-dashboard-ztxo.onrender.com
+    └── trend_forecast.py
 ```
 
 ---
 
-## 今後の展望
+## セットアップ手順
 
-- 機械学習モデルによる求人トレンド予測の精度向上  
-- 異常検知アルゴリズムの強化と自動レポート化  
-- ユーザー認証機能（Supabase Auth）追加  
-- グラフの期間・スキル別フィルタリング  
-- PDF / CSV形式でのレポート出力対応  
+### バックエンド（NestJS）
+
+```bash
+cd backend-nest
+npm install
+npx prisma generate
+npm run build
+npm run start:dev      # 開発モード
+# または
+npm run start:prod     # 本番モード
+```
+
+### フロントエンド（React + Vite）
+
+```bash
+cd frontend
+npm install
+npm run dev
+npm run build
+```
 
 ---
 
-## 作者コメント
+## 環境変数設定
 
-このアプリは「AI × 自動化 × 可視化」をテーマに、  
-求人市場の動きを定量的に把握するために開発しました。  
-フロントエンドからバックエンド、機械学習まで一貫して設計しており、  
-自動更新・異常検知・LLM要約を組み合わせた構成を意識しています。
+### backend-nest/.env
+
+```
+DATABASE_URL="postgresql://postgres:******@db.xxxxxx.supabase.co:5432/postgres?sslmode=require"
+PORT=8080
+NODE_ENV=production
+```
+
+### frontend/.env
+
+```
+VITE_API_URL=https://ai-job-dashboard-nestjs.onrender.com
+```
 
 ---
 
-## ライセンス
+## API エンドポイント例
 
-MIT License © 2025 Shohei Nakahara
+| メソッド | エンドポイント | 説明 |
+|----------|----------------|------|
+| GET | `/jobs` | 求人データの取得 |
+| GET | `/trends` | 求人トレンドの取得 |
+| GET | `/trends/forecast` | 求人件数予測データの取得 |
+| GET | `/trends/skill` | スキル別トレンドデータ取得 |
+
+---
+
+## 今後の開発予定
+
+- 認証（ログイン）機能の追加（Supabase Auth）
+- 自動スクレイピング＋定期実行（GitHub Actions / Cron）
+- 高度な機械学習モデルによるトレンド分析
+- UI/UX の改善・ダークモード対応
+
+---
+
+## 作者
+
+中原 翔平  
+自作ポートフォリオとして公開中  
+GitHub: [https://github.com/shohei9278/ai-job-dashboard](https://github.com/shohei9278/ai-job-dashboard)
