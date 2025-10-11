@@ -1,7 +1,8 @@
 # AI Job Dashboard
 
-AI を活用して求人データを収集・分析し、トレンドを可視化するダッシュボードアプリケーションです。  
-バックエンドは NestJS + Prisma、フロントエンドは React + TailwindCSS により構築されています。
+**バージョン:** v2.0.0（構造刷新版）
+AIと機械学習を活用して、求人データを自動収集・分析・可視化するフルスタックWebアプリケーション。
+NestJS + Prisma + Winston + Swagger による堅牢なバックエンド構成へ刷新。
 
 ---
 
@@ -29,8 +30,22 @@ AI を活用して求人データを収集・分析し、トレンドを可視�
 
 ## 公開 URL
 
-- フロントエンド: [https://ai-job-dashboard-plum.vercel.app/](https://ai-job-dashboard-plum.vercel.app/)
-- バックエンド API: [https://ai-job-dashboard-ztxo.onrender.com/api/docs#](https://ai-job-dashboard-ztxo.onrender.com/api/docs#)
+- フロントエンド（Vercel）: [https://ai-job-dashboard-plum.vercel.app/](https://ai-job-dashboard-plum.vercel.app/)
+- バックエンド（Render / NestJS API）: [https://ai-job-dashboard-ztxo.onrender.com/](https://ai-job-dashboard-ztxo.onrender.com/)
+- APIドキュメント（Swagger UI）: [https://ai-job-dashboard-ztxo.onrender.com/api/docs#](https://ai-job-dashboard-ztxo.onrender.com/api/docs#)
+
+---
+
+## システム構成図
+
+```mermaid
+graph TD
+  G["GitHub Actions<br/>(定期実行)"]
+    --> A["Python<br/>(スクレイピング・機械学習・AI要約)"]
+  A -->|データ挿入| B["Supabase<br/>(PostgreSQL)"]
+  B -->|クエリ| C["Backend<br/>(NestJS)"]
+  C -->|APIレスポンス| D["Frontend<br/>(React + Vercel)"]
+```
 
 ---
 
@@ -118,12 +133,26 @@ VITE_API_URL=https://ai-job-dashboard-ztxo.onrender.com
 
 ---
 
+## ロギング（Winston）
+
+- /backend/src/common/logger/winston-logger.service.ts に定義
+- コンソール・ファイル両方へ出力
+- フォーマット: JSON / タイムスタンプ / リクエストID対応
+例：
+```
+[INFO] 2025-10-11 18:00:01 - GET /api/jobs - status=200 duration=45ms
+[ERROR] 2025-10-11 18:01:22 - PrismaClientError: prepared statement already exists
+```
+
+---
+
 ## 今後の開発予定
 
-- 認証（ログイン）機能の追加（Supabase Auth）
-- 自動スクレイピング＋定期実行（GitHub Actions / Cron）
-- 高度な機械学習モデルによるトレンド分析
-- UI/UX の改善・ダークモード対応
+- LangChain + Supabase Vector Store による過去トレンド参照型AI提案
+- WebSocketによるリアルタイム求人更新通知
+- PDF / CSVレポート自動出力
+- MLモデル再学習の自動トリガー
+- ユーザー認証（Supabase Auth + JWT）
 
 ---
 
