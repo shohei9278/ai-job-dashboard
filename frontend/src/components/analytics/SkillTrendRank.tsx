@@ -9,7 +9,7 @@ export default function SkillTrendRank() {
   const API_URL = import.meta.env.VITE_API_URL;
   
   useEffect(() => {
-     fetch(`${API_URL}/api/trends/skill`)
+     fetch(`${API_URL}/trends/skill`)
     .then(res => res.json())
     .then(data => setSkills(data))
     .catch(err => console.error("Trend fetch error:", err));
