@@ -30,7 +30,7 @@ AI を活用して求人データを収集・分析し、トレンドを可視�
 ## 公開 URL
 
 - フロントエンド: [https://ai-job-dashboard-plum.vercel.app/](https://ai-job-dashboard-plum.vercel.app/)
-- バックエンド API: [https://ai-job-dashboard-nestjs.onrender.com/](https://ai-job-dashboard-nestjs.onrender.com/)
+- バックエンド API: [https://ai-job-dashboard-ztxo.onrender.com](https://ai-job-dashboard-ztxo.onrender.com)
 
 ---
 
@@ -102,7 +102,7 @@ NODE_ENV=production
 ### frontend/.env
 
 ```
-VITE_API_URL=https://ai-job-dashboard-nestjs.onrender.com
+VITE_API_URL=https://ai-job-dashboard-ztxo.onrender.com
 ```
 
 ---
