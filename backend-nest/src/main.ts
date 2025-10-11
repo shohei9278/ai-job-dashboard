@@ -4,6 +4,7 @@ import { WinstonModule } from 'nest-winston';
 import { winstonConfig } from './logger/logger.config';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
+import { setupSwagger } from './swagger/swagger.config';
 
 async function bootstrap() {
   (BigInt.prototype as any).toJSON = function () {
@@ -15,6 +16,8 @@ async function bootstrap() {
   
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalInterceptors(new LoggingInterceptor());
+
+  setupSwagger(app);
 
   app.enableCors({
     origin: [
