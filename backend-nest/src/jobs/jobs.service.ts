@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma } from '../../generated/prisma';
+import { FindJobsQueryDto } from './dto/find-jobs-query.dto';
 
 @Injectable()
 export class JobsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
+  private readonly logger = new Logger(JobsService.name);
 
   async getRecentJobs(limit = 50) {
     return this.prisma.jobs.findMany({
@@ -17,39 +19,47 @@ export class JobsService {
     return this.prisma.jobs.create({ data });
   }
 
-  async findJobs(filters: { q?: string; skill?: string; location?: string }) {
-    const { q, skill, location } = filters;
+  async findJobs(query: FindJobsQueryDto) {
+    const { keyword, location, company, minSalary, maxSalary, skills,mode } = query;
+    
 
-    // 動的にwhere句を組み立て
-    const where: Prisma.jobsWhereInput = {};
+    const normalizedSkills =
+      typeof skills === 'string'
+        ? [skills]
+        : Array.isArray(skills)
+        ? skills
+          : [];
+    
 
-    if (q) {
-      where.OR = [
-        { title: { contains: q, mode: 'insensitive' } },
-        { description: { contains: q, mode: 'insensitive' } },
-        { summary: { contains: q, mode: 'insensitive' } },
-      ];
-    }
-
-    if (skill) {
-      where.skills = { has: skill }; // text[] カラムに対応
-    }
-
-    if (location) {
-      where.location = { contains: location, mode: 'insensitive' };
-    }
-
-    const jobs = await this.prisma.jobs.findMany({
-      where,
-      orderBy: { collected_date: 'desc' },
+    return this.prisma.jobs.findMany({
+      where: {
+        AND: [
+          keyword
+            ? {
+                OR: [
+                  { title: { contains: keyword, mode: 'insensitive' } },
+                  { summary: { contains: keyword, mode: 'insensitive' } },
+                  { description: { contains: keyword, mode: 'insensitive' } },
+                ],
+              }
+            : {},
+          location ? { location: { contains: location, mode: 'insensitive' } } : {},
+          company ? { company: { contains: company, mode: 'insensitive' } } : {},
+          minSalary ? { salary: { gte: Number(minSalary) } } : {},
+          maxSalary ? { salary: { lte: Number(maxSalary) } } : {},
+          normalizedSkills.length > 0 ? {
+            skills:
+              mode === 'all'
+                ? { hasEvery: normalizedSkills }
+                : { hasSome: normalizedSkills },
+          }: {},
+        ],
+      },
+      orderBy: {
+        salary: 'desc',
+      },
+      take: 50,
     });
-
-    // BigInt → String に変換（APIレスポンス用）
-    return jobs.map((job) => ({
-      ...job,
-      id: job.id.toString(),
-      salary: job.salary?.toString() ?? null,
-    }));
   }
 
 }

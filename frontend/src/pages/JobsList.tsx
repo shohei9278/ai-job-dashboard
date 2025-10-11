@@ -27,9 +27,10 @@ export default function JobsList({
     setLoading(true);
     try {
       const params = new URLSearchParams();
-      if (query) params.append("q", query);
-      if (skill) params.append("skill", skill);
+      if (query) params.append("keyword", query);
+      if (skill) params.append("skills", skill);
       if (location) params.append("location", location);
+      params.append("mode", "any");
 
       const res = await fetch(`${API_URL}/jobs?${params.toString()}`);
       const data = await res.json();

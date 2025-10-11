@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma } from '../../generated/prisma';
 
+
 @Injectable()
 export class Trendservice {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
+  private readonly logger = new Logger(Trendservice.name);
 
   async getRecentTrends(limit = 50) {
     return this.prisma.prefecture_job_counts.findMany({
