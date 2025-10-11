@@ -30,7 +30,7 @@ AI を活用して求人データを収集・分析し、トレンドを可視�
 ## 公開 URL
 
 - フロントエンド: [https://ai-job-dashboard-plum.vercel.app/](https://ai-job-dashboard-plum.vercel.app/)
-- バックエンド API: [https://ai-job-dashboard-ztxo.onrender.com](https://ai-job-dashboard-ztxo.onrender.com)
+- バックエンド API: [https://ai-job-dashboard-ztxo.onrender.com/api/docs#]([https://ai-job-dashboard-ztxo.onrender.com](https://ai-job-dashboard-ztxo.onrender.com/api/docs#)
 
 ---
 
