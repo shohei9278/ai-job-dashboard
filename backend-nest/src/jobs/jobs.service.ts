@@ -56,9 +56,8 @@ export class JobsService {
         ],
       },
       orderBy: {
-        salary: 'desc',
-      },
-      take: 50,
+        collected_date: 'desc',
+      }
     });
   }
 

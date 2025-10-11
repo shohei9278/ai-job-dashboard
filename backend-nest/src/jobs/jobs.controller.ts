@@ -10,8 +10,6 @@ export class JobsController {
   @Get()
   async getJobs(@Query() query: FindJobsQueryDto) {
     try {
-     console.log(query);
-     
       return await this.jobsService.findJobs(query);
     } catch (err) {
       console.error('GET /jobs error:', err);
