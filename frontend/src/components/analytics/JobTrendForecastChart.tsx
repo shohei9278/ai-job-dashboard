@@ -1,4 +1,5 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
+import { JobsContext } from "../../pages/Dashboard";
 import {
   LineChart,
   Line,
@@ -17,18 +18,14 @@ dayjs.extend(timezone);
 
 
 export default function JobTrendForecastChart() {
+  const { integration } = useContext(JobsContext);
   const [forecastData, setForecastData] = useState<any[]>([]);
-  const [aiComment, setAiComment] = useState<string>("");
 
-  const API_URL = import.meta.env.VITE_API_URL;
+
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        
-        const forecastRes = await fetch(`${API_URL}/trends/forecast`);
-        const forecastJson = await forecastRes.json();
-
-        const forecast = forecastJson.map((d: any) => ({
+    if (!integration?.forecast) return;
+    const forecast = integration.forecast.map((d: any) => ({
           date: dayjs(d.date).tz('Asia/Tokyo').format('YYYY/MM/DD'),
           forecast: d.predicted_count,
           lower: d.lower_bound,
@@ -36,24 +33,8 @@ export default function JobTrendForecastChart() {
         }));
 
         setForecastData(forecast);
-      } catch (err) {
-        console.error("Fetch error:", err);
-      }
-    };
 
-    const fetchComment = async () => {
-      try {
-        
-        const res = await fetch(`${API_URL}/trends/insight`);
-        const json = await res.json();
-        setAiComment(json[0].summary || "コメント生成中...");
-      } catch {
-        setAiComment("コメントの取得に失敗しました。");
-      }
-    };
-
-    fetchData();
-    fetchComment();
+ 
   }, []);
 
   return (
@@ -109,13 +90,11 @@ export default function JobTrendForecastChart() {
         </LineChart>
       </ResponsiveContainer>
 
-      {aiComment && (
-        <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+      <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
           <p className="text-gray-800 text-sm leading-relaxed">
-            💬 <strong>AIコメント：</strong> {aiComment}
+            💬 <strong>AIコメント：</strong> {integration.ai.trend_ai_comment}
           </p>
         </div>
-      )}
     </div>
   );
 }

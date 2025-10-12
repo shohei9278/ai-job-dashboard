@@ -20,12 +20,50 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 
-export const JobsContext = createContext<any[]>([]);
+interface IntegrationType {
+  actual: any[];
+  forecast: any[];
+  skills: any[];
+  ai: {
+    trend_ai_comment: string;
+    summary_ai_comment: string;
+  };
+}
+
+
+interface JobsContextType {
+  jobs: any[];
+  integration:IntegrationType
+}
+
+
+export const JobsContext = createContext<JobsContextType>({
+  jobs: [],
+  integration: {
+    actual: [],
+    forecast: [],
+    skills: [],
+    ai: {
+      trend_ai_comment: "",
+      summary_ai_comment: "",
+    },
+  },
+});
 
 
 export default function Dashboard() {
   const [jobs, setJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [integration, setIntegration] = useState<IntegrationType>({
+    actual: [],
+    skills: [],
+    forecast: [],
+    ai: {
+      trend_ai_comment: "",
+      summary_ai_comment: "",
+    },
+  });
+  
   const API_URL = import.meta.env.VITE_API_URL;
   
     useEffect(() => {
@@ -48,6 +86,19 @@ export default function Dashboard() {
           console.error("Failed to fetch jobs:", err);
            setLoading(false);
         });
+      
+       fetch(`${API_URL}/trends/integration`)
+        .then((res) => res.json())
+         .then((data) => {
+          
+          setIntegration(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error("Failed to fetch Integrations", err);
+           setLoading(false);
+        });
+      
     }, []);
   
   return (
@@ -64,7 +115,7 @@ export default function Dashboard() {
     </div>
       )  : (
             
-            <JobsContext.Provider value={jobs}>
+          <JobsContext.Provider value={{ jobs,integration }}>
 
          <div className="bg-gray-50 min-h-screen p-4 sm:p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
@@ -81,13 +132,13 @@ export default function Dashboard() {
           </Card>
         </div>
 
-        <div className="col-span-12 lg:col-span-6">
+      <div className="col-span-12 lg:col-span-6">
           <Card title="新着求人件数の推移予測">
             <JobTrendForecastChart />
           </Card>
         </div>
 
-       
+   
         <div className="col-span-12 lg:col-span-6">
           <Card title="年収分布（万円）">
             <SalaryDistributionChart />
@@ -124,7 +175,7 @@ export default function Dashboard() {
           <Card title="地域別求人数">
             <LocationChart />
           </Card>
-        </div>
+        </div> 
 
       </div>
     </div>

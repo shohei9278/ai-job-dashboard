@@ -16,10 +16,11 @@ export default function SkillSalaryChart() {
   const [data, setData] = useState<{ skill: string; avg: number }[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const jobs = useContext(JobsContext);
+  const { jobs } = useContext(JobsContext) as { jobs: any[] };
 
 
   useEffect(() => {
+     if (!jobs || jobs.length === 0) return;
     const skillSalaries: Record<string, number[]> = {};
 
         jobs.forEach((job: any) => {

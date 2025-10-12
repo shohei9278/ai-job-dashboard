@@ -15,10 +15,11 @@ export default function SalaryDistributionChart() {
   const [salaryData, setSalaryData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const jobs = useContext(JobsContext);
+const { jobs } = useContext(JobsContext) as { jobs: any[] };
 
   useEffect(() => {
     
+     if (!jobs || jobs.length === 0) return;
     const salaries = jobs
           .filter((job: any) => typeof job.salary === "number" && job.salary > 0)
           .map((job: any) => Math.round(job.salary / 10000));

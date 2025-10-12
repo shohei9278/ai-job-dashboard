@@ -14,9 +14,10 @@ import {
 export default function SkillTrendChart() {
   const [trendData, setTrendData] = useState<any[]>([]);
   const [selectedSkills, setSelectedSkills] = useState<string[]>(["Python", "React"]);
-  const jobs = useContext(JobsContext);
+const { jobs } = useContext(JobsContext) as { jobs: any[] };
   
   useEffect(() => {
+     if (!jobs || jobs.length === 0) return;
      const trendMap: Record<string, Record<string, number[]>> = {};
 
         jobs.forEach((job: any) => {

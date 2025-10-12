@@ -193,7 +193,7 @@ const RankingList = React.memo(({ ranking }: { ranking: { name: string; count: n
 
 // メイン 
 export default function LocationPieChart() {
-  const jobs = useContext(JobsContext);
+const { jobs } = useContext(JobsContext) as { jobs: any[] };
 
 
   const { countData, ranking, pieData } = useMemo(() => {

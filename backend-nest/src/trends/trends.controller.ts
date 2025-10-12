@@ -1,4 +1,5 @@
-import { Controller, Get, Query, BadRequestException } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Controller, Get } from '@nestjs/common';
 import { Trendservice } from './trends.service';
 
 @Controller('trends')
@@ -33,6 +34,13 @@ export class TrendsController {
    @Get('skill')
   async getSkill() {
    return this.Trendservice.getTrendsSkill()
+   }
+  
+  @Get('integration')
+  @ApiOperation({ summary: '求人トレンド＋AIコメント統合API' })
+  @ApiResponse({ status: 200, description: 'トレンド＋AIコメントを返す' })
+  async getIntegration() {
+   return this.Trendservice.getUnifiedTrends()
   }
 
 }

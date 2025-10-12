@@ -1,18 +1,17 @@
-import { useEffect, useState } from "react";
-
-
+import { useEffect, useState,useContext } from "react";
+import { JobsContext } from "../../pages/Dashboard";
 
 
 export default function SkillTrendRank() {
-  const [skills, setSkills] = useState([]);
+  const { integration } = useContext(JobsContext);
+  const [skills, setSkills] = useState<any[]>([]);
 
-  const API_URL = import.meta.env.VITE_API_URL;
+
   
   useEffect(() => {
-     fetch(`${API_URL}/trends/skill`)
-    .then(res => res.json())
-    .then(data => setSkills(data))
-    .catch(err => console.error("Trend fetch error:", err));
+    if (!integration.skills || integration.skills.length === 0) return;
+
+    setSkills(integration.skills)
 }, []);
   
   

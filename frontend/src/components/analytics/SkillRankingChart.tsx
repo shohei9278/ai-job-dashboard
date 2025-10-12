@@ -16,9 +16,11 @@ export default function SkillRankingChart() {
   const [data, setData] = useState<{ name: string; count: number }[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const jobs = useContext(JobsContext);
+const { jobs } = useContext(JobsContext) as { jobs: any[] };
 
   useEffect(() => {
+
+     if (!jobs || jobs.length === 0) return;
     const skillCount: Record<string, number> = {};
 
         jobs.forEach((job: any) => {

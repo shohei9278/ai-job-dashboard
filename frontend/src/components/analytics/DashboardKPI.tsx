@@ -20,7 +20,7 @@ export default function DashboardKPI()
   const [ranking, setRanking] = useState<{ name: string; count: number }[]>([]);
   const [topSkill, setTopSkill] = useState("データなし");
 
-  const jobs = useContext(JobsContext);
+  const { jobs } = useContext(JobsContext) as { jobs: any[] };
 
 
   

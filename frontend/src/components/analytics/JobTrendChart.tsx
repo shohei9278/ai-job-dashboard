@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-
+import { useEffect, useState,useContext } from "react";
+import { JobsContext } from "../../pages/Dashboard";
 import {
   LineChart,
   Line,
@@ -20,42 +20,42 @@ dayjs.extend(timezone);
 
 type TrendPoint = { collected_date: string; total_jobs: number };
 
+
+
 export default function JobTrendChart() {
+    const { integration } = useContext(JobsContext);
   const [data, setData] = useState<TrendPoint[]>([]);
 
-  const [aiComment, setAiComment] = useState<string>("");
-  const API_URL = import.meta.env.VITE_API_URL;
-  useEffect(() => {
-    fetch(`${API_URL}/trends/actual`)
-      .then((res) => res.json())
-      .then((data) => {
 
-        const normalized = data.map((actual: any) => ({
+  // const API_URL = import.meta.env.VITE_API_URL;
+  useEffect(() => {
+
+    if (!integration?.actual) return;
+    const normalized = integration.actual.map((actual: any) => ({
                 ...actual,
                 collected_date: actual.collected_date
             ? dayjs(actual.collected_date).tz('Asia/Tokyo').format('YYYY/MM/DD')
             : null,
         }));
         
-        setData(normalized)
-      }
-    )
-      .catch((err) => console.error("Trend fetch error:", err));
+    setData(normalized)
     
-    const fetchComment = async () => {
-      try {
-        const res = await fetch(`${API_URL}/trends/summary`);
-        const json = await res.json();
-        setAiComment(json[0].summary || "コメント生成中...");
-      } catch {
-        setAiComment("コメントの取得に失敗しました。");
-      }
-    };
+    // const fetchComment = async () => {
+    //   try {
+    //     const res = await fetch(`${API_URL}/trends/summary`);
+    //     const json = await res.json();
+    //     setAiComment(json[0].summary || "コメント生成中...");
+    //   } catch {
+    //     setAiComment("コメントの取得に失敗しました。");
+    //   }
+    // };
 
 
-    fetchComment();
+    // fetchComment();
 
-  }, []);
+    //  setAiComment(integration.ai.summary_ai_comment)
+
+  }, [integration]);
 
   const prev = data[data.length - 2];
 const latest = data[data.length - 1];
@@ -104,13 +104,11 @@ const diff = latest && prev ? latest.total_jobs - prev.total_jobs : 0;
   </div>
       )}
       
-      {aiComment && (
-        <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+      <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
           <p className="text-gray-800 text-sm leading-relaxed">
-            💬 <strong>AIコメント：</strong> {aiComment}
+            💬 <strong>AIコメント：</strong> {integration.ai.summary_ai_comment}
           </p>
         </div>
-      )}
       
     </div>
   );

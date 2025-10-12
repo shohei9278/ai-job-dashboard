@@ -1,12 +1,18 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Inject, Logger } from '@nestjs/common';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import type { Cache } from 'cache-manager';
 import { PrismaService } from '../prisma/prisma.service';
 import { Prisma } from '../../generated/prisma';
 
 
 @Injectable()
 export class Trendservice {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+  ) { }
   private readonly logger = new Logger(Trendservice.name);
+
+  
 
   async getRecentTrends(limit = 50) {
     return this.prisma.prefecture_job_counts.findMany({
@@ -67,33 +73,77 @@ export class Trendservice {
   
    // 予想データAIコメント
   async getTrendsInsight() {
-    return await this.prisma.job_insights.findMany({
+    return await this.prisma.job_insights.findFirst({
        select: {
       summary: true,
      },
       orderBy: { date: 'desc' },
-      take: 1,
     }); 
   }
   
    // 実測データAIコメント
   async getTrendsSummary() {
-    return await this.prisma.job_count_summary.findMany({
+    return await this.prisma.job_count_summary.findFirst({
        select: {
       summary: true,
      },
       orderBy: { date: 'desc' },
-      take: 1,
     });  
   }
+
+  // AIコメント統合
+    async getAiInsights() {
+    const [trendInsight, summaryInsight] = await Promise.all([
+      this.prisma.job_insights.findFirst({ orderBy: { date: 'desc' } }),
+      this.prisma.job_count_summary.findFirst({ orderBy: { date: 'desc' } }),
+    ]);
+
+    return {
+      trend_ai_comment:
+        trendInsight?.summary || 'AIトレンドコメントがまだ生成されていません。',
+      summary_ai_comment:
+        summaryInsight?.summary || 'AIサマリーコメントがまだ生成されていません。',
+    };
+    }
+  
+  
   
    // スキル予測データ
   async getTrendsSkill() {
     return await this.prisma.skill_trends.findMany({
       orderBy: { trend_score: 'desc' },
-      take: 20,
+      take: 10,
     });  
-   }
+  }
+
+  // 確認用統合
+  async getUnifiedTrends() {
+    // キャッシュ確認
+    const cached = await this.cacheManager.get('latest_trends');
+     if (cached) {
+      this.logger.log('キャッシュからトレンドデータを取得');
+      return cached;
+    }
+
+    const [actual, forecast, skills, ai] = await Promise.all([
+      this.getTrendsActual(),
+      this.getTrendsForecast(),
+      this.getTrendsSkill(),
+      this.getAiInsights(),
+    ]);
+
+    await this.cacheManager.set('latest_trends', { actual, forecast, skills, ai }, 60 * 60 * 1000);
+    this.logger.log('トレンドデータをキャッシュに保存');
+    
+
+    return {
+      generated_at: new Date().toISOString(),
+      actual,
+      forecast,
+      skills,
+      ai,
+    };
+  }
   
  
   
