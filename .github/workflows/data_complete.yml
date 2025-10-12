@@ -26,4 +26,4 @@ jobs:
 
       - name: Run data complete
         run: |
-          python analysis/data_compete.py
+          python analysis/data_complete.py
