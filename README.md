@@ -158,7 +158,7 @@ VITE_API_URL=https://ai-job-dashboard-ztxo.onrender.com
 - MLモデル再学習の自動トリガー
 - ユーザー認証（Supabase Auth + JWT）
 - MLOps パイプライン整備（GitHub Actions + Python + Supabase）
-- angChain + Supabase Vector Store による過去トレンド参照型AI提案
+- LangChain + Supabase Vector Store による過去トレンド参照型AI提案
 
 ---
 
