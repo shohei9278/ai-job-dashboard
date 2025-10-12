@@ -1,8 +1,12 @@
 import requests
 import datetime
+import os
+from dotenv import load_dotenv
 
-# NestJSサーバー
-WEBHOOK_URL = "https://ai-job-dashboard-ztxo.onrender.com/webhook/update"
+load_dotenv()
+
+# 送信先URL
+WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 
 payload = {
     "type": "data_update",
