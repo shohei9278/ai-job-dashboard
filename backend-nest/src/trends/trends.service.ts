@@ -77,7 +77,7 @@ export class Trendservice {
        select: {
       summary: true,
      },
-      orderBy: { date: 'desc' },
+      orderBy: { created_at: 'desc' },
     }); 
   }
   
@@ -87,7 +87,7 @@ export class Trendservice {
        select: {
       summary: true,
      },
-      orderBy: { date: 'desc' },
+      orderBy: { created_at: 'desc' },
     });  
   }
 
@@ -96,16 +96,16 @@ export class Trendservice {
        select: {
       summary: true,
      },
-      orderBy: { date: 'desc' },
+      orderBy: { created_at: 'desc' },
     }); 
   }
 
   // AIコメント統合
     async getAiInsights() {
     const [trendInsight, summaryInsight,trendScore] = await Promise.all([
-      this.prisma.job_insights.findFirst({ orderBy: { date: 'desc' } }),
-      this.prisma.job_count_summary.findFirst({ orderBy: { date: 'desc' } }),
-      this.prisma.trend_score_summary.findFirst({ orderBy: { date: 'desc' } }),
+      this.prisma.job_insights.findFirst({ orderBy: { created_at: 'desc' } }),
+      this.prisma.job_count_summary.findFirst({ orderBy: { created_at: 'desc' } }),
+      this.prisma.trend_score_summary.findFirst({ orderBy: { created_at: 'desc' } }),
     ]);
 
     return {
