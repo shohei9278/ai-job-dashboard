@@ -24,14 +24,7 @@ export default function SkillTrendRank() {
         求人データがあと数日分収集されるとここに表示されます。
       </div>
     );
-   }
-  
-  const getNumber = () => { 
-
-
-  }
-  
-  
+   }  
 
 return (
     <div className="p-6 max-w-3xl mx-auto">
