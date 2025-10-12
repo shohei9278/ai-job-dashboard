@@ -56,5 +56,5 @@ if slopes:
             "trend_score": row["trend_score"],
             "latest_count": row["latest_count"],
             "collected_date": pd.Timestamp.today().date().isoformat()
-        }, on_conflict=["skill", "collected_date"]).execute()
+        }, on_conflict="skill,collected_date").execute()
 
