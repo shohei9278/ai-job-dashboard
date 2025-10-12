@@ -24,7 +24,6 @@ export class SupabaseService {
     const tables = [
       'job_insights',
       'job_trend_forecast',
-      'skill_trends',
       'job_count_summary',
     ];
 

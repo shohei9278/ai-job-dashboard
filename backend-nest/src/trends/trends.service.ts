@@ -143,6 +143,7 @@ export class Trendservice {
   async getUnifiedTrends() {
     // キャッシュ確認
     const cached = await this.cacheManager.get('latest_trends');
+    
      if (cached) {
       this.logger.log('キャッシュからトレンドデータを取得');
       return cached;
@@ -155,7 +156,7 @@ export class Trendservice {
       this.getAiInsights(),
     ]);
 
-    await this.cacheManager.set('latest_trends', { actual, forecast, skills, ai }, 60 * 60 * 1000);
+    await this.cacheManager.set('latest_trends', { actual, forecast, skills, ai }, 24 * 60 * 60 * 1000);
     this.logger.log('トレンドデータをキャッシュに保存');
     
 

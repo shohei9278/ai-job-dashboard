@@ -10,5 +10,6 @@ import { CacheModule } from '@nestjs/cache-manager';
   ],
   controllers: [TrendsController],
   providers: [Trendservice, PrismaService],
+   exports: [Trendservice],
 })
 export class TrendsModule {}

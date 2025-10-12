@@ -46,6 +46,7 @@ export class JobsService {
 
     // キャッシュ確認
     const cached = await this.cacheManager.get(cacheKey);
+    
     if (cached) {
       this.logger.log(`キャッシュから求人データを取得: ${cacheKey}`);
       return cached;
@@ -82,7 +83,7 @@ export class JobsService {
 
     // キャッシュ保存(1日)
     await this.cacheManager.set(cacheKey, jobs, 24 * 60 * 60 * 1000);
-    
+     this.logger.log('求人データをキャッシュに保存');
     return jobs
   }
 

@@ -10,8 +10,6 @@ export default function SkillTrendRank() {
   
   useEffect(() => {
     if (!integration.skills || integration.skills.length === 0) return;
-    console.log(integration.ai.trend_score_summary);
-    
     setSkills(integration.skills)
 }, [integration]);
   

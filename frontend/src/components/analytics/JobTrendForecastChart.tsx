@@ -25,7 +25,7 @@ export default function JobTrendForecastChart() {
 
 
   useEffect(() => {
-      console.log(integration?.forecast);
+
     if (!integration?.forecast) return;
   
     

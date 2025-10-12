@@ -1,5 +1,5 @@
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get ,Header} from '@nestjs/common';
 import { Trendservice } from './trends.service';
 
 @Controller('trends')
@@ -35,7 +35,7 @@ export class TrendsController {
   async getSkill() {
    return this.Trendservice.getTrendsSkill()
    }
-  
+  @Header('Cache-Control', 'public, max-age=86400, stale-while-revalidate=3600')
   @Get('integration')
   @ApiOperation({ summary: '求人トレンド＋AIコメント統合API' })
   @ApiResponse({ status: 200, description: 'トレンド＋AIコメントを返す' })

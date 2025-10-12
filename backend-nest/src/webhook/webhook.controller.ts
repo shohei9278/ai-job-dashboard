@@ -10,6 +10,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import type { Cache } from 'cache-manager';
 import { SupabaseService } from '../supabase/supabase.service';
 import { JobsService } from '../jobs/jobs.service';
+import { Trendservice } from '../trends/trends.service';
 
 
 @Controller('webhook')
@@ -19,7 +20,8 @@ export class WebhookController {
   
   constructor(
     private readonly supabaseService: SupabaseService,
-     private readonly jobsService: JobsService,
+    private readonly jobsService: JobsService,
+       private readonly Trendservice: Trendservice,
    @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
 
@@ -33,23 +35,34 @@ export class WebhookController {
 
       try {
 
-        if ('store' in this.cacheManager && 'keys' in (this.cacheManager as any).store) {
-          const keys: string[] = await (this.cacheManager as any).store.keys();
-          for (const key of keys) {
-            await this.cacheManager.del(key);
-          }
-          this.logger.log(`キャッシュ削除完了 (${keys.length} keys)`);
-        } 
+        await (this.cacheManager as any).clear();
+        
+          this.logger.log(`キャッシュ削除完了`);
+
+        // if ('store' in this.cacheManager && 'keys' in (this.cacheManager as any).store) {
+        //   const keys: string[] = await (this.cacheManager as any).store.keys();
+        //   for (const key of keys) {
+        //     await this.cacheManager.del(key);
+        //   }
+        //   this.logger.log(`キャッシュ削除完了 (${keys.length} keys)`);
+        // } 
          
         await this.jobsService.findJobs({});
         this.logger.log(`求人データ再キャッシュ完了`);
 
+         await this.Trendservice.getUnifiedTrends();
+        this.logger.log(`レンドドデータ再キャッシュ完了`);
+
     
-      const latestData = await this.supabaseService.fetchLatestTrends();
-      // メモリキャッシュに保存（一日）
-      await this.cacheManager.set('latest_trends', latestData, 24 * 60 * 60 * 1000);
-      this.logger.log('レンドドデータキャッシュ更新完了');
-      } catch (error) {
+      // const latestData = await this.supabaseService.fetchLatestTrends();
+      // // メモリキャッシュに保存（一日）
+      // await this.cacheManager.set('latest_trends', latestData, 24 * 60 * 60 * 1000);
+      // this.logger.log('レンドドデータキャッシュ更新完了');
+      // } catch (error) {
+      //   this.logger.error('キャッシュ処理中にエラー:', error);
+        // }
+        
+       }  catch (error) {
         this.logger.error('キャッシュ処理中にエラー:', error);
       }
 
