@@ -24,7 +24,14 @@ export default function SkillTrendRank() {
         求人データがあと数日分収集されるとここに表示されます。
       </div>
     );
+   }
+  
+  const getNumber = () => { 
+
+
   }
+  
+  
 
 return (
     <div className="p-6 max-w-3xl mx-auto">
@@ -32,9 +39,9 @@ return (
         <thead>
           <tr className="border-b bg-gray-50">
             <th className="py-2 text-left w-10">#</th>
-            <th className="py-2 text-left">Skill</th>
-            <th className="py-2 text-right">Trend Score</th>
-            <th className="py-2 text-right">Jobs</th>
+            <th className="py-2 text-left">スキル名</th>
+            <th className="py-2 text-right">需要指標</th>
+            <th className="py-2 text-right">新着求人数</th>
           </tr>
         </thead>
         <tbody>
@@ -43,7 +50,7 @@ return (
               <td className="py-1">{i + 1}</td>
               <td className="py-1 capitalize">{s.skill}</td>
               <td className="py-1 text-right text-green-600 font-semibold">
-                +{s.trend_score.toFixed(2)}
+                {s.trend_score <= 0 ? (""): ("+")}{s.trend_score.toFixed(2)}
               </td>
               <td className="py-1 text-right">{s.latest_count}</td>
             </tr>

@@ -163,7 +163,7 @@ export default function Dashboard() {
 
         
         <div className="col-span-12 lg:col-span-4">
-          <Card title="スキル需要予測">
+          <Card title="需要上昇スキル Top10">
             <SkillTrendRank />
           </Card>
         </div>
