@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
 from sklearn.linear_model import LinearRegression
+import numpy as np
 
 load_dotenv()
 
