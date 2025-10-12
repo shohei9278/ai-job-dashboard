@@ -5,12 +5,19 @@ import os
 from dotenv import load_dotenv
 from sklearn.linear_model import LinearRegression
 import numpy as np
+from openai import AzureOpenAI
 
 load_dotenv()
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+client = AzureOpenAI(
+    api_key=os.getenv("AZURE_OPENAI_KEY"),
+    api_version="2024-12-01-preview",
+    azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
+)
 
 # データ取得 
 response = supabase.table("jobs").select("id, collected_date, skills").execute()
@@ -58,3 +65,58 @@ if slopes:
             "collected_date": pd.Timestamp.today().date().isoformat()
         }, on_conflict="skill,collected_date").execute()
 
+#]AIコメント生成
+prompt = f"""
+なたはIT業界の採用・技術動向を分析する専門アナリストです。
+以下は最新のスキルトレンドデータです。
+
+各スキルには「trend_score（需要変化率）」と「latest_count（最新の求人件数）」があります。
+trend_scoreが高いほど需要が上昇傾向にあり、低いほど減少しています。
+
+---
+【データ例】
+{trend_df}
+---
+
+上記データをもとに、次の観点で要約してください：
+
+1 **上昇傾向のスキルTOP3**
+→ なぜ上昇していると考えられるか、業界背景も簡潔に。
+
+2**下降傾向のスキル**
+→ 減少している要因（代替技術や市場変化）を簡単に。
+
+3**全体傾向まとめ**
+→ AI・クラウド・フロントエンドなど、どの領域の求人が強いかを一文で。
+
+**提案コメント（任意）**
+→ 「今後注目すべきスキル」「採用戦略」「学習戦略」など、1行で。
+
+出力フォーマット：
+- 上昇スキル: ...
+- 下降スキル: ...
+- 総評: ...
+- 提案: ...
+"""
+
+try:
+    comment = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.4,
+    )
+    summary = comment.choices[0].message.content.strip()
+    
+except Exception as e:
+    summary = f"AIコメント生成失敗: {e}"
+
+print("AIコメント:", summary)
+
+try:
+    supabase.table("trend_score_summary").insert({
+    "date": datetime.now().date().isoformat(),
+    "summary": summary,
+    "model_version": "gpt-4o-mini"
+}).execute()
+except Exception as e:
+    summary = f"trend_score_summaryに登録失敗: {e}"

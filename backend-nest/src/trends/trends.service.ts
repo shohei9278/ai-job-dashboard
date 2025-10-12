@@ -91,11 +91,21 @@ export class Trendservice {
     });  
   }
 
+  async getTrendsScoreSummary() {
+    return await this.prisma.trend_score_summary.findFirst({
+       select: {
+      summary: true,
+     },
+      orderBy: { date: 'desc' },
+    }); 
+  }
+
   // AIコメント統合
     async getAiInsights() {
-    const [trendInsight, summaryInsight] = await Promise.all([
+    const [trendInsight, summaryInsight,trendScore] = await Promise.all([
       this.prisma.job_insights.findFirst({ orderBy: { date: 'desc' } }),
       this.prisma.job_count_summary.findFirst({ orderBy: { date: 'desc' } }),
+      this.prisma.trend_score_summary.findFirst({ orderBy: { date: 'desc' } }),
     ]);
 
     return {
@@ -103,6 +113,8 @@ export class Trendservice {
         trendInsight?.summary || 'AIトレンドコメントがまだ生成されていません。',
       summary_ai_comment:
         summaryInsight?.summary || 'AIサマリーコメントがまだ生成されていません。',
+      trend_score_summary:
+        trendScore?.summary || 'AIサマリーコメントがまだ生成されていません。',
     };
     }
   
@@ -110,7 +122,18 @@ export class Trendservice {
   
    // スキル予測データ
   async getTrendsSkill() {
+
+    const latest = await this.prisma.skill_trends.findFirst({
+    select: { collected_date: true },
+    orderBy: { collected_date: 'desc' },
+  });
+
+    if (!latest) return []; 
+    
     return await this.prisma.skill_trends.findMany({
+      where: {
+      collected_date: latest.collected_date,
+    },
       orderBy: { trend_score: 'desc' },
       take: 10,
     });  

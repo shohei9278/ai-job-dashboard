@@ -13,6 +13,7 @@ import {
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+import Comment from "../common/Comment";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -24,7 +25,10 @@ export default function JobTrendForecastChart() {
 
 
   useEffect(() => {
+      console.log(integration?.forecast);
     if (!integration?.forecast) return;
+  
+    
     const forecast = integration.forecast.map((d: any) => ({
           date: dayjs(d.date).tz('Asia/Tokyo').format('YYYY/MM/DD'),
           forecast: d.predicted_count,
@@ -35,7 +39,7 @@ export default function JobTrendForecastChart() {
         setForecastData(forecast);
 
  
-  }, []);
+  }, [integration]);
 
   return (
     <div className="bg-white overflow-visible">
@@ -90,11 +94,8 @@ export default function JobTrendForecastChart() {
         </LineChart>
       </ResponsiveContainer>
 
-      <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <p className="text-gray-800 text-sm leading-relaxed">
-            💬 <strong>AIコメント：</strong> {integration.ai.trend_ai_comment}
-          </p>
-        </div>
+      <Comment comment={integration.ai.trend_ai_comment} />
+
     </div>
   );
 }

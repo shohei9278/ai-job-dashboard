@@ -14,6 +14,7 @@ import {
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+import Comment from "../common/Comment";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -103,12 +104,8 @@ const diff = latest && prev ? latest.total_jobs - prev.total_jobs : 0;
     （前日比 {diff > 0 ? "+" + diff : diff} 件）
   </div>
       )}
-      
-      <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <p className="text-gray-800 text-sm leading-relaxed">
-            💬 <strong>AIコメント：</strong> {integration.ai.summary_ai_comment}
-          </p>
-        </div>
+
+      <Comment comment={integration.ai.summary_ai_comment} />
       
     </div>
   );

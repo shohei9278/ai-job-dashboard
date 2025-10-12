@@ -27,6 +27,7 @@ interface IntegrationType {
   ai: {
     trend_ai_comment: string;
     summary_ai_comment: string;
+    trend_score_summary: string;
   };
 }
 
@@ -46,6 +47,7 @@ export const JobsContext = createContext<JobsContextType>({
     ai: {
       trend_ai_comment: "",
       summary_ai_comment: "",
+      trend_score_summary: "",
     },
   },
 });
@@ -61,6 +63,7 @@ export default function Dashboard() {
     ai: {
       trend_ai_comment: "",
       summary_ai_comment: "",
+      trend_score_summary: "",
     },
   });
   

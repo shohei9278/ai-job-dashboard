@@ -1,6 +1,6 @@
 import { useEffect, useState,useContext } from "react";
 import { JobsContext } from "../../pages/Dashboard";
-
+import Comment from "../common/Comment";
 
 export default function SkillTrendRank() {
   const { integration } = useContext(JobsContext);
@@ -10,9 +10,10 @@ export default function SkillTrendRank() {
   
   useEffect(() => {
     if (!integration.skills || integration.skills.length === 0) return;
-
+    console.log(integration.ai.trend_score_summary);
+    
     setSkills(integration.skills)
-}, []);
+}, [integration]);
   
   
    if (skills.length === 0) {
@@ -48,7 +49,8 @@ return (
             </tr>
           ))}
         </tbody>
-      </table>
+    </table>
+    <Comment comment={integration.ai.trend_score_summary} />
     </div>
   );
 }
