@@ -46,8 +46,8 @@ export class WebhookController {
 
     
       const latestData = await this.supabaseService.fetchLatestTrends();
-      // メモリキャッシュに保存（60分）
-      await this.cacheManager.set('latest_trends', latestData, 3600);
+      // メモリキャッシュに保存（一日）
+      await this.cacheManager.set('latest_trends', latestData, 24 * 60 * 60 * 1000);
       this.logger.log('レンドドデータキャッシュ更新完了');
       } catch (error) {
         this.logger.error('キャッシュ処理中にエラー:', error);

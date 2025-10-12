@@ -80,8 +80,8 @@ export class JobsService {
       }
     });
 
-    // キャッシュ保存
-    await this.cacheManager.set(cacheKey, jobs, 3600);
+    // キャッシュ保存(1日)
+    await this.cacheManager.set(cacheKey, jobs, 24 * 60 * 60 * 1000);
     
     return jobs
   }
