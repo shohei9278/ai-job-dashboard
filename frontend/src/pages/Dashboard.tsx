@@ -153,20 +153,23 @@ export default function Dashboard() {
             <SkillSalaryChart />
           </Card>
         </div>
+                
+          <div className="col-span-12 lg:col-span-4">
+          <Card title="需要上昇スキル Top10">
+            <SkillTrendRank />
+          </Card>
+        </div>
 
       
         <div className="col-span-12 lg:col-span-4">
           <Card title="スキル出現ランキング Top10">
             <SkillRankingChart />
           </Card>
+          
         </div>
 
         
-        <div className="col-span-12 lg:col-span-4">
-          <Card title="需要上昇スキル Top10">
-            <SkillTrendRank />
-          </Card>
-        </div>
+       
 
         <div className="col-span-12 lg:col-span-4">
           <Card title="スキル別平均年収トレンド（万円）">
