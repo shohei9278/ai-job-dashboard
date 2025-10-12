@@ -12,6 +12,7 @@ NestJS + Prisma + Winston + Swagger による堅牢なバックエンド構成�
 - 求人数推移・スキルトレンドなどの可視化
 - Supabase (PostgreSQL) を利用したデータ管理
 - フロントエンドからバックエンドへの API 連携済み
+- **キャッシュ戦略（24時間キャッシュ + APIレスポンス最適化）による初期表示速度の改善** (2025/10/12)
 - Render（API）および Vercel（UI）にデプロイ済み
 
 ---
@@ -21,7 +22,7 @@ NestJS + Prisma + Winston + Swagger による堅牢なバックエンド構成�
 | レイヤー | 使用技術 |
 |----------|-----------|
 | フロントエンド | React, Vite, TailwindCSS |
-| バックエンド | NestJS, TypeScript, Prisma |
+| バックエンド | NestJS, TypeScript, Prisma, Winston, Swagger |
 | データベース | PostgreSQL（Supabase） |
 | デプロイ | Render（バックエンド）, Vercel（フロントエンド） |
 | 分析スクリプト | Python（スクレイピング・トレンド分析） |
@@ -32,7 +33,7 @@ NestJS + Prisma + Winston + Swagger による堅牢なバックエンド構成�
 
 - フロントエンド（Vercel）: [https://ai-job-dashboard-plum.vercel.app/](https://ai-job-dashboard-plum.vercel.app/)
 - バックエンド（Render / NestJS API）: [https://ai-job-dashboard-ztxo.onrender.com/](https://ai-job-dashboard-ztxo.onrender.com/)
-- APIドキュメント（Swagger UI）: [https://ai-job-dashboard-ztxo.onrender.com/api/docs#](https://ai-job-dashboard-ztxo.onrender.com/api/docs#)
+- APIドキュメント（Swagger UI）: [https://ai-job-dashboard-ztxo.onrender.com/api/docs](https://ai-job-dashboard-ztxo.onrender.com/api/docs)
 
 ---
 
@@ -60,6 +61,9 @@ ai-job-dashboard/
 │
 ├── backend-nest/            # NestJS + Prisma (API)
 │   ├── src/
+│   │   ├── common/
+│   │   │   └── interceptors/
+│   │   │       └── logging.interceptor.ts
 │   │   ├── prisma/
 │   │   ├── jobs/
 │   │   ├── trends/
@@ -153,6 +157,8 @@ VITE_API_URL=https://ai-job-dashboard-ztxo.onrender.com
 - PDF / CSVレポート自動出力
 - MLモデル再学習の自動トリガー
 - ユーザー認証（Supabase Auth + JWT）
+- MLOps パイプライン整備（GitHub Actions + Python + Supabase）
+- angChain + Supabase Vector Store による過去トレンド参照型AI提案
 
 ---
 
