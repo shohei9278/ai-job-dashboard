@@ -2,7 +2,7 @@ import requests
 import datetime
 
 # NestJSサーバー
-WEBHOOK_URL = "http://localhost:3000/webhook/update"
+WEBHOOK_URL = "https://ai-job-dashboard-ztxo.onrender.com/webhook/update"
 
 payload = {
     "type": "data_update",
