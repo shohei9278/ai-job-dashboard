@@ -1,11 +1,6 @@
 import { useEffect, useState, createContext } from "react";
-import DashboardKPI from "../components/dashboard/DashboardKPI";
-import SalaryDistributionChart from "../components/dashboard/SalaryDistributionChart";
-import JobTrendChart from "../components/dashboard/JobTrendChart";
-import JobTrendForecastChart from "../components/dashboard/JobTrendForecastChart";
-import SkillRanking from "../components/dashboard/SkillRanking";
-import RegionRanking  from "../components/dashboard/RegionRanking";
-import DashboardComment from "../components/dashboard/DashboardComment";
+import JobTrendForecastChart from "../components/forecast/JobTrendForecastChart";
+import ForecastComment from "../components/forecast/ForecastComment";
 import Card from "../components/common/Card";
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -117,48 +112,21 @@ export default function Dashboard() {
          <div className="bg-gray-50 min-h-screen p-4 sm:p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
 
-       
-        <div className="col-span-12">
-          <DashboardKPI />
-        </div>
 
-        
-        <div className="col-span-12 lg:col-span-6">
-          <Card title="新着求人件数の推移（直近7日）">
-            <JobTrendChart />
-          </Card>
-        </div>
-
-      <div className="col-span-12 lg:col-span-6">
+        <div className="col-span-12 lg:col-span-12">
           <Card title="新着求人件数の推移予測">
             <JobTrendForecastChart />
           </Card>
-                </div>
+        </div>
                 
-          <div className="col-span-12 lg:col-span-6">
-          <Card title="スキル指標TOP5">
-            <SkillRanking />
-          </Card>
-                </div>
-                
-        <div className="col-span-12 lg:col-span-6">
-          <Card title="地域別求人数TOP5">
-            <RegionRanking />
+          <div className="col-span-12 lg:col-span-12">
+          <Card title="AIコメント">
+            <ForecastComment />
           </Card>
         </div>
 
+
    
-        <div className="col-span-12 lg:col-span-6">
-          <Card title="年収分布（万円）">
-            <SalaryDistributionChart />
-          </Card>
-        </div>
-                
-        <div className="col-span-12 lg:col-span-6">
-          <Card title="AIコメント">
-            <DashboardComment />
-          </Card>
-        </div>
 
       </div>
     </div>

@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useContext } from "react";
-import { JobsContext } from "../../pages/Dashboard";
+import { JobsContext } from "../../pages/Prefectures";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import {
   ComposableMap,

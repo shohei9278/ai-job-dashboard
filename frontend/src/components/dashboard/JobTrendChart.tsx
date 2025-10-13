@@ -14,7 +14,7 @@ import {
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
-import Comment from "../common/Comment";
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -35,7 +35,7 @@ export default function JobTrendChart() {
     const normalized = integration.actual.map((actual: any) => ({
                 ...actual,
                 collected_date: actual.collected_date
-            ? dayjs(actual.collected_date).tz('Asia/Tokyo').format('YYYY/MM/DD')
+            ? dayjs(actual.collected_date).utc(actual.collected_date).format('YYYY/MM/DD')
             : null,
         }));
         
@@ -105,7 +105,7 @@ const diff = latest && prev ? latest.total_jobs - prev.total_jobs : 0;
   </div>
       )}
 
-      <Comment comment={integration.ai.summary_ai_comment} />
+      
       
     </div>
   );

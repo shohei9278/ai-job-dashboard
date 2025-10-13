@@ -13,7 +13,7 @@ import {
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
-import Comment from "../common/Comment";
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -30,7 +30,7 @@ export default function JobTrendForecastChart() {
   
     
     const forecast = integration.forecast.map((d: any) => ({
-          date: dayjs(d.date).tz('Asia/Tokyo').format('YYYY/MM/DD'),
+          date: dayjs(d.date).utc(d.date).format('YYYY/MM/DD'),
           forecast: d.predicted_count,
           lower: d.lower_bound,
           upper: d.upper_bound,
@@ -94,7 +94,7 @@ export default function JobTrendForecastChart() {
         </LineChart>
       </ResponsiveContainer>
 
-      <Comment comment={integration.ai.trend_ai_comment} />
+     
 
     </div>
   );

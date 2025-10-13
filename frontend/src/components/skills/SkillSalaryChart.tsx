@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from "react";
-import { JobsContext } from "../../pages/Dashboard";
+import { JobsContext } from "../../pages/Skills";
 import {
   BarChart,
   Bar,

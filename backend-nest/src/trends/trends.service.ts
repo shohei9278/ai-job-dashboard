@@ -28,6 +28,7 @@ export class Trendservice {
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(today.getDate() - 6);
     
+    // DBから直近7日分のデータを取得
      const actuals = await this.prisma.prefecture_job_counts.findMany({
        where: {
       collected_date: { gte: sevenDaysAgo, 
@@ -38,16 +39,23 @@ export class Trendservice {
      
     //  グループ化
      const grouped = actuals.reduce((acc:any, row: any) => {
-      const date = row.collected_date;
+      const date = row.collected_date.toISOString().split('T')[0];;
       acc[date] = (acc[date] || 0) + (row.job_count || 0);
       return acc;
      }, {});
+    
+    // 直近7日の日付リストを生成（データがない日も含める）
+     const dates = Array.from({ length: 7 }).map((_, i) => {
+    const d = new Date(sevenDaysAgo);
+    d.setDate(sevenDaysAgo.getDate() + i);
+    return d.toISOString().split('T')[0];
+  });
 
     
-     return  Object.entries(grouped)
-      .map(([date, total]) => ({
+     return dates
+      .map(date => ({
         collected_date: date,
-        total_jobs: total,
+        total_jobs: grouped[date] || 0,
       }))
      
    }

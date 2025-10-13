@@ -1,6 +1,5 @@
 import { useEffect, useState,useContext } from "react";
-import { JobsContext } from "../../pages/Dashboard";
-import Comment from "../common/Comment";
+import { JobsContext } from "../../pages/Skills";
 
 export default function SkillTrendRank() {
   const { integration } = useContext(JobsContext);
@@ -25,30 +24,33 @@ export default function SkillTrendRank() {
    }  
 
 return (
-    <div className="p-6 max-w-3xl mx-auto">
+    <div className="p-4 max-w-3xl mx-auto">
       <table className="w-full border-collapse">
         <thead>
-          <tr className="border-b bg-gray-50">
-            <th className="py-2 text-left w-10">#</th>
-            <th className="py-2 text-left">スキル名</th>
-            <th className="py-2 text-right">需要指標</th>
-            <th className="py-2 text-right">新着求人数</th>
+          <tr className="border-b  border-gray-100 bg-gray-50">
+            <th className="py-1 text-left w-10 text-gray-800">#</th>
+            <th className="py-1 text-left  text-gray-800">スキル名</th>
+            <th className="py-1 text-right  text-gray-800">需要指標</th>
+            <th className="py-1 text-right  text-gray-800">新着求人数</th>
           </tr>
         </thead>
         <tbody>
           {skills.map((s:any, i) => (
-            <tr key={s.skill} className="border-b hover:bg-gray-100">
-              <td className="py-1">{i + 1}</td>
-              <td className="py-1 capitalize">{s.skill}</td>
-              <td className="py-1 text-right text-green-600 font-semibold">
+            <tr key={s.skill} className="border-b  border-gray-100 hover:bg-gray-100">
+              <td className="py-1 text-gray-500 font-medium">{i + 1}</td>
+              <td className="py-1 text-gray-800 font-medium">{s.skill}</td>
+              <td className={`font-semibold text-right ${
+                  s.trend_score >= 0
+                    ? "text-green-600"
+                    : "text-red-500"
+                }`}>
                 {s.trend_score <= 0 ? (""): ("+")}{s.trend_score.toFixed(2)}
               </td>
-              <td className="py-1 text-right">{s.latest_count}</td>
+              <td className="py-1 text-right  text-gray-800">{s.latest_count}</td>
             </tr>
           ))}
         </tbody>
     </table>
-    <Comment comment={integration.ai.trend_score_summary} />
     </div>
   );
 }
