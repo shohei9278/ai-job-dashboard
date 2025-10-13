@@ -15,7 +15,6 @@ const PREFECTURES = [
 
 
 export default function RegionRanking() {
-  const navigate = useNavigate();
   const { jobs } = useContext(JobsContext) as { jobs: any[] };
   const [rankingData, setRnkingData] = useState<any[]>([]);
 
