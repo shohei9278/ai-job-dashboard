@@ -1,7 +1,7 @@
 name: Keep Render Awake
 on:
   schedule:
-    - cron: "*/10 * * * *"  # 10分おき
+   - cron: "*/15 0-15 * * *"
 jobs:
   ping:
     runs-on: ubuntu-latest
