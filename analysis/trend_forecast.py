@@ -5,7 +5,7 @@ from datetime import datetime,date, timedelta
 import os
 from dotenv import load_dotenv
 from openai import AzureOpenAI
-
+import numpy as np
 #]Load environment variables
 load_dotenv()
 
@@ -57,7 +57,12 @@ model.fit(df)
 future = model.make_future_dataframe(periods=14)
 forecast = model.predict(future)
 
+forecast["yhat"] = np.maximum(forecast["yhat"], 0)
+forecast["yhat_lower"] = np.maximum(forecast["yhat_lower"], 0)
+forecast["yhat_upper"] = np.maximum(forecast["yhat_upper"], 0)
+
 forecast_df = forecast[["ds", "yhat", "yhat_lower", "yhat_upper"]].tail(14)
+
 print("予測結果:\n", forecast_df)
 
 #Supabaseに保存
