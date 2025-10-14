@@ -36,6 +36,27 @@ trend = (
       .reset_index()
 )
 
+all_dates = pd.date_range(
+    start=df["collected_date"].min().normalize(),
+    end=df["collected_date"].max().normalize(),
+    freq="D"
+)
+
+filled_trends = []
+for skill in trend["skills"].unique():
+    sub = trend[trend["skills"] == skill].copy()
+    sub = pd.merge(
+        pd.DataFrame({"collected_date": all_dates}),
+        sub,
+        on="collected_date",
+        how="left"
+    )
+    sub["skills"] = skill
+    sub["count"] = sub["count"].fillna(0)
+    filled_trends.append(sub)
+
+trend = pd.concat(filled_trends, ignore_index=True)
+
 # 成長スコア算出（線形回帰の傾き） 
 slopes = []
 for skill in trend["skills"].unique():

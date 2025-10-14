@@ -34,7 +34,17 @@ df = pd.DataFrame(data.data)
 
 df["collected_date"] = pd.to_datetime(df["collected_date"])
 df = df.groupby("collected_date").sum(numeric_only=True).reset_index()
-df_seven_days_ago = df[df["collected_date"].dt.date >= seven_days_ago]
+seven_days_ago = pd.Timestamp.now().normalize() - pd.Timedelta(days=6)
+today = pd.Timestamp.now().normalize()
+all_dates = pd.date_range(start=seven_days_ago, end=today, freq="D")
+df = pd.merge(
+    pd.DataFrame({"collected_date": all_dates}),
+    df,
+    on="collected_date",
+    how="left"
+).fillna(0)
+
+df_seven_days_ago = df
 print(df_seven_days_ago)
 df.columns = ["ds", "y"]
 
