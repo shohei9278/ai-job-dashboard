@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install prophet pandas supabase python-dotenv openai
+          pip install prophet pandas supabase python-dotenv openai numpy
 
       - name: Run trend forecast
         env:
