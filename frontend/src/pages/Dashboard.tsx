@@ -133,10 +133,10 @@ export default function Dashboard() {
           <Card title="新着求人件数の推移予測">
             <JobTrendForecastChart />
           </Card>
-                </div>
+     </div>
                 
           <div className="col-span-12 lg:col-span-6">
-          <Card title="スキル指標TOP5">
+          <Card title="スキル需要指標TOP5">
             <SkillRanking />
           </Card>
                 </div>
