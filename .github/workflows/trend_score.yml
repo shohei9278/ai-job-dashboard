@@ -2,7 +2,7 @@ name: Daily Skill Trend Scoring
 
 on:
   schedule:
-    - cron: "35 1 * * *"   
+    - cron: "35 17 * * *"   
   workflow_dispatch:       
 
 jobs:
