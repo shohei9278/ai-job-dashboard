@@ -70,7 +70,7 @@ export default function Header({
                  "https://placehold.jp/120x120.png?text=No+Image"
                 }
                 alt="user avatar"
-                className="w-8 h-8 rounded-full border-gray-200"
+                className="w-8 h-8 rounded-full border border-gray-200"
               />
               <span className="hidden sm:block text-sm text-gray-700 font-medium">
                 {user.name || "ユーザー"} さん
@@ -104,7 +104,7 @@ export default function Header({
         ) : (
           <button
             onClick={() => navigate("/login")}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer"
           >
             ログイン
           </button>

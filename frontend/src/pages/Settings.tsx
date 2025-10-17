@@ -124,7 +124,7 @@ export default function Profile() {
 
              {/* プロフィール画像 */}
       <section className="flex flex-col md:flex-row items-center gap-6 border-b pb-6">
-        <div className="flex flex-col items-center gap-3">
+        <div className="flex flex-col items-center gap-3  w-[100%]">
           <img
              key={avatarUrl || "default"}
             src={
@@ -132,19 +132,44 @@ export default function Profile() {
               "https://placehold.jp/120x120.png?text=No+Image"
             }
             alt="avatar"
-            className="w-28 h-28 rounded-full border-gray-200 object-cover"
+            className="w-50 h-50 rounded-full border border-gray-200 object-cover"
           />
           <div className="flex flex-col items-center gap-2">
+
+            <label
+              htmlFor="file"
+              className="flex flex-col items-center justify-center w-full h-20 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
             <input
+              id="file"
               type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="text-sm text-gray-600"
+                    accept="image/*"
+                    className="hidden"
+                  onChange={handleFileChange}
             />
+            <svg
+              className="w-8 h-8 text-gray-500 mb-2"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            <span className="text-sm text-gray-600">
+              {file?.name || "ファイルを選択"}
+            </span>
+            </label>
+
+          
             <button
               onClick={handleUpload}
               disabled={!file}
-              className="inline-flex items-center gap-1 bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 disabled:opacity-50"
+              className="inline-flex items-center gap-1 bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 disabled:opacity-50 cursor-pointer"
             >
               <Upload size={16} />
               アップロード
@@ -152,7 +177,7 @@ export default function Profile() {
 
             {avatarUrl && ( <button
               onClick={() => removeImage()}
-                className="inline-flex items-center gap-1 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+                className="inline-flex items-center gap-1 bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 cursor-pointer"
               >
               <Trash2 size={18} />
               削除
@@ -243,7 +268,7 @@ export default function Profile() {
         <button
           onClick={handleSubmit}
           disabled={saving}
-          className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
+          className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50 cursor-pointer"
         >
           <Save size={18} />
           {saving ? "保存中..." : "保存"}

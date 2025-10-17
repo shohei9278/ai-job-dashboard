@@ -70,7 +70,7 @@ export default function Login() {
           
           {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
           
-        <button className="w-full bg-blue-600 text-white py-2 rounded">
+        <button className="w-full bg-blue-600 text-white py-2 rounded cursor-pointer">
           ログイン
         </button>
       </form>
