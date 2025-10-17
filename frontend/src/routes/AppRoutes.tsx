@@ -31,7 +31,7 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
 /**
  * アプリ全体のルーティング
  */
-export default function App() {
+export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
