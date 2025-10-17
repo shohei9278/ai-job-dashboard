@@ -22,14 +22,14 @@ export default function RequireLogin() {
 
       <button
         onClick={() => navigate("/login", { state: { from } })}
-        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
+        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition mb-4 cursor-pointer"
       >
-        ログインする
+        ログイン
       </button>
 
       <button
           onClick={() => navigate("/signup", { state: { from } })}
-          className="bg-gray-200 text-gray-700 px-6 py-2 rounded hover:bg-gray-300 transition"
+          className="bg-gray-200 text-gray-700 px-6 py-2 rounded hover:bg-gray-300 transition cursor-pointer"
         >
           新規登録
         </button>
