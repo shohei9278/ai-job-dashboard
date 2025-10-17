@@ -18,7 +18,7 @@ export default function Profile() {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const { user, setUser } = useAuth();
+  const { setUser } = useAuth();
   // 初期データ取得
   useEffect(() => {
     (async () => {
