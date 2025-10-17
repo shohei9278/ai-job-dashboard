@@ -27,8 +27,24 @@ export default function Login() {
 
   return (
      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="bg-white p-6 rounded-xl shadow-md w-80">
+      <div className="bg-white p-6 rounded-xl shadow-md w-100">
         <h2 className="text-xl font-semibold text-center mb-4">ログイン</h2>
+        <div className="flex items-start gap-2 p-4 border-l-4 border-yellow-400 bg-yellow-50 rounded mb-8">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-5 h-5 text-yellow-500 mt-0.5 flex-shrink-0"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M12 4.5l7.5 13h-15L12 4.5z" />
+        </svg>
+        <p className="text-sm text-yellow-800">
+            新規登録したくない場合は<br></br>以下のアカウントをお使いください。<br></br>
+            メールアドレス:test@example.com<br></br>
+            パスワード:pass123
+          </p>
+        </div>
 
            <form
         onSubmit={handleLogin}

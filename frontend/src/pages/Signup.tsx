@@ -25,7 +25,7 @@ export default function Register() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="bg-white p-6 rounded-xl shadow-md w-80">
+      <div className="bg-white p-6 rounded-xl shadow-md w-100">
         <h2 className="text-xl font-semibold text-center mb-4">新規登録</h2>
 
         <form onSubmit={handleRegister} className="space-y-3">
