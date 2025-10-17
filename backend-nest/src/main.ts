@@ -5,6 +5,9 @@ import { winstonConfig } from './logger/logger.config';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 import { setupSwagger } from './swagger/swagger.config';
+import cookieParser from 'cookie-parser';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 async function bootstrap() {
   (BigInt.prototype as any).toJSON = function () {
@@ -14,6 +17,7 @@ async function bootstrap() {
     logger: WinstonModule.createLogger(winstonConfig),
  });
   
+  app.use(cookieParser());
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalInterceptors(new LoggingInterceptor());
 

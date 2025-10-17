@@ -87,4 +87,42 @@ export class JobsService {
     return jobs
   }
 
+
+  // ユーザーのスキルと一致する求人を検索
+  async findMatchingJobs(userSkills: { skill: string; level: number }[]) {
+    const skillNames = userSkills.map(s => s.skill.toLowerCase());
+
+    const jobs = await this.prisma.jobs.findMany({
+      where: {
+        OR: skillNames.map(skill => ({
+          skills: { has: skill },
+        })),
+      },
+      take: 30,
+    });
+
+    return jobs
+      .map(job => {
+        // 各求人ごとにユーザーとのスキル一致数と加重スコアを計算
+        let weightedScore = 0;
+        let matchedCount = 0;
+
+        for (const userSkill of userSkills) {
+          if (job.skills.includes(userSkill.skill.toLowerCase())) {
+            matchedCount++;
+            // スキルレベルを重みとして加算（例：level^2）
+            weightedScore += Math.pow(userSkill.level, 2);
+          }
+        }
+
+        return {
+          ...job,
+          matchScore: weightedScore,
+          matchedCount,
+        };
+      })
+      .filter(j => j.matchScore > 0)
+      .sort((a, b) => b.matchScore - a.matchScore);
+  }
+
 }

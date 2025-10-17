@@ -1,165 +1,76 @@
-import { useEffect, useState, createContext } from "react";
-import SkillSalaryChart from "../components/skills/SkillSalaryChart";
-import SkillRankingChart from "../components/skills/SkillRankingChart";
-import SkillTrendChart from "../components/skills/SkillTrendChart";
-import SkillTrendRanking from "../components/skills/SkillTrendRanking";
-import SkillComment from "../components/skills/SkillComment";
-import Card from "../components/common/Card";
+import { useState } from "react";
+import { useNavigate,useLocation } from "react-router-dom";
+import { loginApi } from "../api/auth";
+import { useAuth } from "../context/AuthContext";
+import { getProfile } from "../api/profile";
+export default function Login() {
+  const navigate = useNavigate();
+   const location = useLocation();
+  const { setUser } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const from = location.state?.from || "/"; 
 
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
-dayjs.extend(utc);
-dayjs.extend(timezone);
-
-
-interface IntegrationType {
-  actual: any[];
-  forecast: any[];
-  skills: any[];
-  ai: {
-    trend_ai_comment: string;
-    summary_ai_comment: string;
-    trend_score_summary: string;
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await loginApi(email, password);
+      const profile = await getProfile();
+       setUser(profile.user);
+      
+      navigate(from, { replace: true });
+    } catch (err: any) {
+     setError(err.message || "登録に失敗しました");
+    }
   };
-}
 
-
-interface JobsContextType {
-  jobs: any[];
-  integration:IntegrationType
-}
-
-
-export const JobsContext = createContext<JobsContextType>({
-  jobs: [],
-  integration: {
-    actual: [],
-    forecast: [],
-    skills: [],
-    ai: {
-      trend_ai_comment: "",
-      summary_ai_comment: "",
-      trend_score_summary: "",
-    },
-  },
-});
-
-
-export default function Dashboard() {
-  const [jobs, setJobs] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [integration, setIntegration] = useState<IntegrationType>({
-    actual: [],
-    skills: [],
-    forecast: [],
-    ai: {
-      trend_ai_comment: "",
-      summary_ai_comment: "",
-      trend_score_summary: "",
-    },
-  });
-  
-  const API_URL = import.meta.env.VITE_API_URL;
-  
-    useEffect(() => {
-      fetch(`${API_URL}/jobs`)
-        .then((res) => res.json())
-        .then((data) => {
-          const normalized = data.map((job: any) => ({
-        ...job,
-        id: Number(job.id),            
-        salary: job.salary ? Number(job.salary) : null, 
-        collected_date: job.collected_date
-    ? dayjs(job.collected_date).utc(job.collected_date).format('YYYY/MM/DD')
-    : null,
-      }));
-          
-          setJobs(normalized);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.error("Failed to fetch jobs:", err);
-           setLoading(false);
-        });
-      
-       fetch(`${API_URL}/trends/integration`)
-        .then((res) => res.json())
-         .then((data) => {
-          
-          setIntegration(data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.error("Failed to fetch Integrations", err);
-           setLoading(false);
-        });
-      
-    }, []);
-  
   return (
+     <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="bg-white p-6 rounded-xl shadow-md w-80">
+        <h2 className="text-xl font-semibold text-center mb-4">ログイン</h2>
 
-    
-
-    
-    <div className="min-h-screen bg-gray-100">
-
-      {loading ? (
-       <div className="fixed inset-0 flex flex-col items-center justify-center bg-black/50 text-white z-50">
-      <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin mb-4"></div>
-      <p className="text-lg font-semibold tracking-wide">読み込み中...</p>
-    </div>
-      )  : (
-            
-          <JobsContext.Provider value={{ jobs,integration }}>
-
-         <div className="bg-gray-50 min-h-screen p-4 sm:p-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
-
-
-        <div className="col-span-12 lg:col-span-6">
-          <Card title="スキル別 平均年収 Top10">
-            <SkillSalaryChart />
-          </Card>
-        </div>
-                
+           <form
+        onSubmit={handleLogin}
+        className="space-y-3"
+      >
+       
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="メールアドレス"
+          className="w-full border p-2 rounded mb-3"
+          required
+        />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="パスワード"
+          className="w-full border p-2 rounded mb-4"
+          required
+          />
+          
+          {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+          
+        <button className="w-full bg-blue-600 text-white py-2 rounded">
+          ログイン
+        </button>
+      </form>
         
-        <div className="col-span-12 lg:col-span-6">
-          <Card title="スキル出現ランキング Top10">
-            <SkillRankingChart />
-          </Card>          
-        </div>
-        
-        <div className="col-span-12 lg:col-span-6">
-          <Card title="需要上昇スキル Top10">
-            <SkillTrendRanking />
-          </Card>
-        </div>
-
-
-        <div className="col-span-12 lg:col-span-6">
-          <Card title="スキル別平均年収トレンド（万円）">
-            <SkillTrendChart />
-          </Card>
-                </div>
-                
-        <div className="col-span-12 lg:col-span-12">
-          <Card title="AIコメント">
-            <SkillComment />
-          </Card>
-        </div>
-                
-   
+         <p className="text-center text-sm mt-3">
+          
+          <a href="/signup" className="text-blue-500 underline">
+            新規登録はこちら
+          </a>
+        </p>
 
       </div>
-    </div>
-      </JobsContext.Provider>
-      )}
-
+      </div>
+   
 
       
-     
-     
-    </div>
+  
   );
 }
