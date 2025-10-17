@@ -32,8 +32,8 @@ export class AuthService {
     const token = await this.generateToken(user.id, user.email);
     res.cookie('access_token', token, {
       httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
+      secure: true,
+      sameSite: 'none',
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7日
     });
     return {message: 'ログイン成功', email: user.email  };
