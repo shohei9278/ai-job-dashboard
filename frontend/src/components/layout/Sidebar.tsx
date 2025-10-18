@@ -18,6 +18,7 @@ interface SidebarProps {
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const menuItems = [
     { name: "ダッシュボード", path: "/", icon: <LayoutDashboard size={18} /> },
+    { name: "個人分析", path: "/match", icon: <Briefcase size={18} /> },
     { name: "求人一覧", path: "/jobsList", icon: <Briefcase size={18} /> },
     { name: "スキル分析", path: "/skills", icon: <BarChart3 size={18} /> },
     { name: "予測", path: "/forecast", icon: <LineChart size={18} /> },

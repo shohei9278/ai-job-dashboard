@@ -24,9 +24,9 @@ export default function SkillTrendRank() {
    }  
 
 return (
-    <div className="p-4 max-w-3xl mx-auto">
-      <table className="w-full border-collapse">
-        <thead>
+    <div className="p-4 w-[100%]">
+      <table className="table-auto w-full">
+        <thead className="text-xs font-semibold uppercase text-gray-400 dark:text-gray-500 bg-gray-50">
           <tr className="border-b  border-gray-100 bg-gray-50">
             <th className="py-1 text-left w-10 text-gray-800">#</th>
             <th className="py-1 text-left  text-gray-800">スキル名</th>
@@ -34,7 +34,7 @@ return (
             <th className="py-1 text-right  text-gray-800">新着求人数</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="text-sm divide-y divide-gray-100">
           {skills.map((s:any, i) => (
             <tr key={s.skill} className="border-b  border-gray-100 hover:bg-gray-100">
               <td className="py-1 text-gray-500 font-medium">{i + 1}</td>
@@ -44,7 +44,7 @@ return (
                     ? "text-green-600"
                     : "text-red-500"
                 }`}>
-                {s.trend_score <= 0 ? (""): ("+")}{s.trend_score.toFixed(2)}
+                {s.trend_score <= 0 ? (""): ("+")}{s.trend_score}
               </td>
               <td className="py-1 text-right  text-gray-800">{s.latest_count}</td>
             </tr>

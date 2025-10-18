@@ -9,9 +9,10 @@ import { HealthModule } from './health/health.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ProfileModule } from './profile/profile.module';
+import { MatchModule } from './match/match.module';
 
 @Module({
-  imports: [PrismaModule, JobsModule,TrendsModule,WebhookModule,HealthModule,AuthModule,UsersModule,ProfileModule],
+  imports: [PrismaModule, JobsModule,TrendsModule,WebhookModule,HealthModule,AuthModule,UsersModule,ProfileModule,MatchModule],
   controllers: [AppController],
   providers: [AppService],
 })

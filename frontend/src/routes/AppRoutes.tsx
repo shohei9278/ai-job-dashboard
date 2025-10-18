@@ -8,6 +8,7 @@ import Prefectures from "../pages/Prefectures";
 import Reports from "../pages/Reports";
 import Settings from "../pages/Settings";
 import JobsList from "../pages/JobsList";
+import Match from "../pages/Match";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import RequireLogin from "../pages/RequireLogin";
@@ -51,6 +52,12 @@ export default function AppRoutes() {
           <Route path="/settings"  element={
               <PrivateRoute>
                 <Settings />
+              </PrivateRoute>
+          } />
+          
+          <Route path="/match"  element={
+              <PrivateRoute>
+                <Match />
               </PrivateRoute>
           }/>
          

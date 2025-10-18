@@ -4,7 +4,7 @@ import { getProfile } from "../api/profile";
 
 type User = {
   id?: string;
-  sub?: string; // JWTでsubが来る
+  sub?: string; 
   name?: string;
   email: string;
   avatar_url?: string | null;
