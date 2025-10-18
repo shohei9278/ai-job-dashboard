@@ -8,14 +8,28 @@ NestJS + Prisma + Winston + Swagger による堅牢なバックエンド構成�
 
 ## 概要
 
-- 求人情報のスクレイピングと自動分析
-- 求人数推移・スキルトレンドなどの可視化
-- Supabase (PostgreSQL) を利用したデータ管理
-- フロントエンドからバックエンドへの API 連携済み
-- **キャッシュ戦略（24時間キャッシュ + APIレスポンス最適化）による初期表示速度の改善** (2025/10/12)
-- Render（API）および Vercel（UI）にデプロイ済み
+-   求人情報を自動収集し、AIで要約・スキル抽出\
+-   求人数推移・スキルトレンドをグラフ可視化\
+-   **スキルマッチ分析 / スキルギャップ分析 / 年収シミュレーション**
+    による個人分析機能\
+-   Azure OpenAI による「AIコメント（市場分析フィードバック）」生成\
+-   Supabase を利用したユーザー管理・画像ストレージ対応\
+-   **JWT + Cookie認証 / NestJS + Prisma構成** による堅牢なAPI基盤
 
 ---
+
+## 主な機能
+
+  |カテゴリ|機能内容|
+  |----------|-----------|
+  |求人分析|スキルトレンド・件数推移・地域別分析|
+  |個人分析|スキルマッチ率、ギャップ分析、年収シミュレーション|
+  |AIコメント|OpenAI（Azure版GPT-4o-mini）による市場価値フィードバック|
+  |データ管理|Supabase（PostgreSQL + Storage）を利用した永続化|
+  |認証機能|JWT + Cookie ベースのログイン／新規登録|
+  |表示最適化| 24時間キャッシュ + 初期ロード改善対応(無料プランの為)|
+
+----
 
 ## 技術構成
 
@@ -30,6 +44,9 @@ NestJS + Prisma + Winston + Swagger による堅牢なバックエンド構成�
 ---
 
 ## 公開 URL
+
+**無料プラン運用のため、アクセス時にサーバーがスリープから復帰する場合があります。**
+**初回アクセス時に数十秒ほど時間がかかる場合があります。**
 
 - フロントエンド（Vercel）: [https://ai-job-dashboard-plum.vercel.app/](https://ai-job-dashboard-plum.vercel.app/)
 - バックエンド（Render / NestJS API）: [https://ai-job-dashboard-ztxo.onrender.com/](https://ai-job-dashboard-ztxo.onrender.com/)
@@ -150,9 +167,19 @@ VITE_API_URL=https://ai-job-dashboard-ztxo.onrender.com
 
 ---
 
+## 新機能 (v2.0.0)
+
+- ユーザー登録・ログイン（JWT + Cookie）
+- プロフィール画像アップロード（Supabase Storage）
+- スキル登録・編集・削除（リアルタイム反映）
+- スキルマッチ / ギャップ分析 / 年収シミュレーション
+- AIコメント生成機能（Azure OpenAI連携、バックエンド側）
+- ログインユーザー向け「マイ分析ページ」
+
+---
+
 ## 今後の開発予定
 
-- LangChain + Supabase Vector Store による過去トレンド参照型AI提案
 - WebSocketによるリアルタイム求人更新通知
 - PDF / CSVレポート自動出力
 - MLモデル再学習の自動トリガー
