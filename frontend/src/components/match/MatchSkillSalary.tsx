@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { IntegrationContext } from "../../pages/Match";
 import { useAuth } from "../../context/AuthContext";
-import { Wallet, Briefcase, TrendingUp } from "lucide-react";
+import { Briefcase, TrendingUp } from "lucide-react";
 
 type SalarySim = {
   averageSalary: number;
