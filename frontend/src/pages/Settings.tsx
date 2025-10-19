@@ -46,6 +46,7 @@ export default function Profile() {
     const newSkills = [...skills];
     
     (newSkills[i] as any)[key] = val;
+    (newSkills[i] as any)["skill"] = val;
     setSkills(newSkills);
   };
 
@@ -53,8 +54,8 @@ export default function Profile() {
   const handleSubmit = async () => {
     setSaving(true);
     try {
-      const validSkills = skills.filter((s) => s.skill.trim() !== "");
-      console.log(validSkills);
+
+    const validSkills = skills.filter((s) => s.skill_display.trim() !== "");
       
     await updateProfile({ name, skills: validSkills });
     const newProfile = await getProfile();
@@ -242,8 +243,6 @@ export default function Profile() {
                 placeholder="スキル名 (例: React, Python)"
                 className="flex-1 border rounded px-3 py-2"
               />
-
-              {s.skill_display}
 
               <div className="flex items-center gap-2">
                 <input

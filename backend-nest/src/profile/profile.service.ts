@@ -46,7 +46,7 @@ export class ProfileService {
           .filter((s) => s.skill.trim() !== '')
           .map((s) => ({
             user_id: userId,
-            skill: s.skill.trim().toLowerCase(),
+            skill: s.skill_display.trim().toLowerCase(),
             skill_display: s.skill_display.trim(),
             level: s.level,
           })),
