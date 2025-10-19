@@ -41,8 +41,8 @@ export const IntegrationContext = createContext<IntegrationContextType>({
 
 export default function SkillMatchOverview() {
   const { user } = useAuth();
-  const [skills, setSkills] = useState<Skill[]>([]);
-  const [integration, setIntegration] = useState<IntegrationType>();
+  const [skills, setSkills] = useState<Skill[] | null>(null);
+  const [integration, setIntegration] = useState<IntegrationType | null>(null);
   useEffect(() => {
     if (!user) return;
     
@@ -69,6 +69,12 @@ export default function SkillMatchOverview() {
 
   if (!user)
     return <p className="text-center mt-20 text-gray-500">ログインしてください</p>;
+
+   if (skills === null)
+    return (
+      <p className="text-center mt-20 text-gray-500">分析準備中...</p>
+    );
+  
 
   if (skills.length === 0)
     return <div className="flex items-start gap-2 p-4 border-l-4 border-yellow-400 bg-yellow-50 rounded mb-8 max-w-5xl mx-auto">

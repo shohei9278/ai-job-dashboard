@@ -21,7 +21,7 @@ export class ProfileService {
 
     const skills = await this.prisma.user_skills.findMany({
       where: { user_id: userId },
-      select: { skill: true, level: true },
+      select: { skill: true,skill_display: true, level: true },
       orderBy: { created_at: 'asc' },
     });
 
@@ -46,7 +46,8 @@ export class ProfileService {
           .filter((s) => s.skill.trim() !== '')
           .map((s) => ({
             user_id: userId,
-            skill: s.skill.trim(),
+            skill: s.skill.trim().toLowerCase(),
+            skill_display: s.skill_display.trim(),
             level: s.level,
           })),
       });

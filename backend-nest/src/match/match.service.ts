@@ -28,7 +28,7 @@ export class MatchService {
     const jobs = await this.prisma.jobs.findMany({
       where: {
         OR: skills.map(skill => ({
-          skills: { has: skill },
+          skill_display: { has: skill },
         })),
       },
     });
@@ -36,8 +36,9 @@ export class MatchService {
     // スコアリング
     const weightedJobs = jobs.map(job => {
       let score = 0;
+      const jobSkills = job.skills.map(s => s.toLowerCase());
       for (const skill of skills) {
-        if (job.skills.includes(skill)) {
+        if (jobSkills.includes(skill.toLowerCase())) {
           const level = levelMap[skill] ?? 1;
           score += 10 * level; // レベル加重
         }
@@ -60,12 +61,12 @@ export class MatchService {
 
   // すべての求人からスキルを抽出
   const allJobs = await this.prisma.jobs.findMany({
-    select: { skills: true },
+    select: { skill_display: true },
   });
 
   const skillCounts: Record<string, number> = {};
   for (const job of allJobs) {
-    for (const skill of job.skills) {
+    for (const skill of job.skill_display) {
       skillCounts[skill] = (skillCounts[skill] || 0) + 1;
     }
   }
@@ -93,7 +94,7 @@ export class MatchService {
     });
 
     //  全求人データからスキル出現数を集計
-    const jobs = await this.prisma.jobs.findMany({ select: { skills: true } });
+    const jobs = await this.prisma.jobs.findMany({ select: { skills: true, } });
 
     const skillCounts: Record<string, number> = {};
     for (const job of jobs) {
@@ -108,7 +109,7 @@ export class MatchService {
 
     //ギャップスコア算出 
     const analysis = Object.entries(skillCounts).map(([skill, demand]) => {
-      const user = userSkills.find((u) => u.skill === skill);
+      const user = userSkills.find((u) => u.skill === skill.toLowerCase());
       const level = user?.level ?? 0;
       const gapScore = demand * (5 - level);
       return { skill, demand, level, gapScore };

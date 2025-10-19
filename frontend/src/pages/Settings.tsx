@@ -8,12 +8,12 @@ import { useAuth } from "../context/AuthContext";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-type Skill = { skill: string; level: number };
+type Skill = { skill: string; skill_display: string;level: number };
 
 export default function Profile() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [skills, setSkills] = useState<Skill[]>([{ skill: "", level: 3 }]);
+  const [skills, setSkills] = useState<Skill[]>([{ skill: "",skill_display: "", level: 3 }]);
   const [avatarUrl, setAvatarUrl] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(true);
@@ -24,10 +24,12 @@ export default function Profile() {
     (async () => {
       try {
         const data = await getProfile();
+        console.log(data);
+        
         setName(data.user?.name ?? "");
         setEmail(data.user?.email ?? "");
         setAvatarUrl(data.user?.avatar_url ?? "");
-        setSkills(data.skills?.length ? data.skills : [{ skill: "", level: 3 }]);
+        setSkills(data.skills?.length ? data.skills : [{ skill: "", skill_display: "", level: 3 }]);
       } catch {
         toast.error("プロフィール情報の取得に失敗しました");
       } finally {
@@ -37,11 +39,12 @@ export default function Profile() {
   }, []);
 
   // スキル編集系
-  const addSkill = () => setSkills([...skills, { skill: "", level: 3 }]);
+  const addSkill = () => setSkills([...skills, { skill: "",  skill_display: "", level: 3 }]);
   const removeSkill = (i: number) => setSkills(skills.filter((_, idx) => idx !== i));
 
   const updateSkill = (i: number, key: keyof Skill, val: string | number) => {
     const newSkills = [...skills];
+    
     (newSkills[i] as any)[key] = val;
     setSkills(newSkills);
   };
@@ -50,7 +53,9 @@ export default function Profile() {
   const handleSubmit = async () => {
     setSaving(true);
     try {
-       const validSkills = skills.filter((s) => s.skill.trim() !== "");
+      const validSkills = skills.filter((s) => s.skill.trim() !== "");
+      console.log(validSkills);
+      
     await updateProfile({ name, skills: validSkills });
     const newProfile = await getProfile();
     setUser((prev) => ({ ...prev, ...(newProfile.user || newProfile) })); 
@@ -232,11 +237,13 @@ export default function Profile() {
             >
               <input
                 type="text"
-                value={s.skill}
-                onChange={(e) => updateSkill(i, "skill", e.target.value)}
+                value={s.skill_display}
+                onChange={(e) => updateSkill(i, "skill_display", e.target.value)}
                 placeholder="スキル名 (例: React, Python)"
                 className="flex-1 border rounded px-3 py-2"
               />
+
+              {s.skill_display}
 
               <div className="flex items-center gap-2">
                 <input
