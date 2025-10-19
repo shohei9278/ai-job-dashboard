@@ -32,11 +32,26 @@ export default function MatchJobs() {
     return pages;
   };
 
+  const getColor = (i:number) => {
+     const result =
+      i >= 80
+      ? "text-red-600"
+      : i >= 60
+      ? "text-green-600"
+      : "text-blue-500";
+    
+    return result
+  };
+
+
+
   if (loading)
     return <p className="text-center mt-10 text-gray-500">読み込み中...</p>;
 
   if (!user)
     return <p className="text-center mt-10 text-gray-500">ログインしてください。</p>;
+
+    
 
   return (
     <div className="max-w-6xl mx-auto">
@@ -57,7 +72,7 @@ export default function MatchJobs() {
 
                 <div className="mb-4 flex justify-between items-center">
                   <span className="text-blue-600 font-semibold flex items-center gap-1">
-                    <Target size={14} /> マッチスコア: {job.matchScore}
+                    <Target size={14} /> マッチスコア:<span className={`${getColor(job.matchScore)}`}> {job.matchScore}</span>
                   </span>
                 </div>
 

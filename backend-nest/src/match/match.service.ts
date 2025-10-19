@@ -47,7 +47,7 @@ export class MatchService {
     });
 
     // 降順ソート
-    return weightedJobs.sort((a, b) => b.matchScore - a.matchScore).slice(0, 20);
+    return weightedJobs.sort((a, b) => b.matchScore - a.matchScore);
   }
 
     // 求められるスキルと自分のスキルのマッチ度を返却
@@ -147,7 +147,7 @@ export class MatchService {
       );
       const matchRate = matched.length / job.skills.length;
 
-      if (matchRate > 0.2) { // 2割以上一致してたら「関連求人」とみなす
+      if (matchRate > 0.1) { // 1割以上一致してたら「関連求人」とみなす
         matchedCount++;
         totalWeightedSalary += Number(job.salary) * matchRate;
         totalWeight += matchRate;
