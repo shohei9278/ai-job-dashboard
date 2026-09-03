@@ -1,0 +1,14 @@
+node_modules
+.venv
+dist
+.env
+.env.*
+.git
+.gitignore
+.vscode
+.idea
+*.log
+logs
+data/*.csv
+data/*.sql
+*.sql

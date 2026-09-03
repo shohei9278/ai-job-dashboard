@@ -23,61 +23,81 @@ export class Trendservice {
 
   // 実測データ
   async getTrendsActual() {
-     
-    const today = new Date()
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(today.getDate() - 6);
-    
+    // DB内の最新収集日を取得
+    const latest = await this.prisma.prefecture_job_counts.findFirst({
+      select: { collected_date: true },
+      orderBy: { collected_date: 'desc' },
+    });
+
+    const endDate = latest?.collected_date ? new Date(latest.collected_date) : new Date();
+    const startDate = new Date(endDate);
+    startDate.setDate(endDate.getDate() - 6);
+
     // DBから直近7日分のデータを取得
-     const actuals = await this.prisma.prefecture_job_counts.findMany({
-       where: {
-      collected_date: { gte: sevenDaysAgo, 
-      lte: today,  }, 
-    },
+    const actuals = await this.prisma.prefecture_job_counts.findMany({
+      where: {
+        collected_date: {
+          gte: startDate,
+          lte: endDate,
+        },
+      },
       orderBy: { collected_date: 'asc' },
-    }); 
-     
-    //  グループ化
-     const grouped = actuals.reduce((acc:any, row: any) => {
-      const date = row.collected_date.toISOString().split('T')[0];;
-      acc[date] = (acc[date] || 0) + (row.job_count || 0);
+    });
+
+    // グループ化
+    const grouped = actuals.reduce((acc: any, row: any) => {
+      const dateStr = row.collected_date.toISOString().split('T')[0];
+      acc[dateStr] = (acc[dateStr] || 0) + (row.job_count || 0);
       return acc;
-     }, {});
-    
-    // 直近7日の日付リストを生成（データがない日も含める）
-     const dates = Array.from({ length: 7 }).map((_, i) => {
-    const d = new Date(sevenDaysAgo);
-    d.setDate(sevenDaysAgo.getDate() + i);
-    return d.toISOString().split('T')[0];
-  });
+    }, {});
 
-    
-     return dates
-      .map(date => ({
-        collected_date: date,
-        total_jobs: grouped[date] || 0,
-      }))
-     
-   }
-  
+    // 直近7日の日付リストを生成
+    const dates = Array.from({ length: 7 }).map((_, i) => {
+      const d = new Date(startDate);
+      d.setDate(startDate.getDate() + i);
+      return d.toISOString().split('T')[0];
+    });
+
+    return dates.map((dateStr) => ({
+      collected_date: dateStr,
+      total_jobs: grouped[dateStr] || 0,
+    }));
+  }
+
+  // 予測データ
   async getTrendsForecast() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-    const today = new Date()
-
-    return await this.prisma.job_trend_forecast.findMany({
-       select: {
+    const forecasts = await this.prisma.job_trend_forecast.findMany({
+      select: {
         date: true,
         predicted_count: true,
         lower_bound: true,
         upper_bound: true,
       },
       where: {
-      date: { gte: today }, 
-    },
+        date: { gte: today },
+      },
       orderBy: { date: 'asc' },
-    }); 
-     
-   }
+    });
+
+    if (forecasts.length === 0) {
+      const allRows = await this.prisma.job_trend_forecast.findMany({
+        select: {
+          date: true,
+          predicted_count: true,
+          lower_bound: true,
+          upper_bound: true,
+        },
+        orderBy: { date: 'desc' },
+        take: 14,
+      });
+      return allRows.reverse();
+    }
+
+    return forecasts;
+  }
   
    // 予想データAIコメント
   async getTrendsInsight() {

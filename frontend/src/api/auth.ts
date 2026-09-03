@@ -19,9 +19,14 @@ api.interceptors.response.use(
       message = data.message.message;
     } else if (Array.isArray(data?.message)) {
       message = data.message[0]; // class-validator で配列になる場合
+    } else if (err.message) {
+      message = err.message;
     }
 
-    return Promise.reject(new Error(message));
+    const error = new Error(message);
+    (error as any).response = err.response;
+    (error as any).status = err.response?.status;
+    return Promise.reject(error);
   }
 );
 

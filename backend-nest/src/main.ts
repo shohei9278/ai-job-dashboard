@@ -23,16 +23,39 @@ async function bootstrap() {
 
   setupSwagger(app);
 
+  const defaultOrigins = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://ai-job-dashboard-plum.vercel.app',
+  ];
+
+  const envOrigins = [
+    process.env.FRONTEND_URL,
+    ...(process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : []),
+  ]
+    .filter(Boolean)
+    .map((origin) => origin!.trim());
+
+  const allowedOrigins = Array.from(new Set([...defaultOrigins, ...envOrigins]));
+
   app.enableCors({
-    origin: [
-      'http://localhost:5173', // 開発中のViteフロント
-      'https://ai-job-dashboard-plum.vercel.app', // デプロイ後のVercel
-    ],
+    origin: (origin, callback) => {
+      // サーバー間通信や curl などのリクエスト（origin なし）を許可
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS blocked for origin: ${origin}`));
+      }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
   });
 
 
-  await app.listen(process.env.PORT ?? 3000);
+ const port = process.env.PORT || 8080;
+  await app.listen(port, '0.0.0.0');
+
+  // ✅ Cloud Run のログモニタで起動を検知しやすい
+  console.log(`[AI-Job-Dashboard] ✅ NestJS running on port ${port}`);
 }
 bootstrap();

@@ -1,0 +1,67 @@
+services:
+  db:
+    image: postgres:15
+    container_name: jobdb
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: jobs
+    ports:
+      - "5433:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d jobs" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ./backend-nest
+    container_name: nest-api
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: 8080
+      DATABASE_URL: postgresql://postgres:example@db:5432/jobs
+    env_file:
+      - ./backend-nest/.env
+    depends_on:
+      db:
+        condition: service_healthy
+    command: sh -c "npx prisma generate && npm run start:prod"
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: ai-job-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost:8080
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - api
+    command: [ "npm", "run", "dev", "--", "--host", "0.0.0.0" ]
+
+  analysis:
+    build:
+      context: ./analysis
+    container_name: ai-analysis
+    volumes:
+      - ./analysis:/app
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    command: [ "python", "main.py", "scrape" ]
+
+volumes:
+  db_data:

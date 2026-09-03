@@ -52,7 +52,7 @@ export class JobsService {
       return cached;
     }
 
-    const jobs = this.prisma.jobs.findMany({
+    const jobs = await this.prisma.jobs.findMany({
       where: {
         AND: [
           keyword

@@ -18,6 +18,15 @@ NestJS + Prisma + Winston + Swagger による堅牢なバックエンド構成�
 
 ---
 
+## ポートフォリオの見どころ
+
+- **データ収集から可視化までを一貫して実装**: Python による求人データ収集・分析、PostgreSQL への保存、NestJS API、React ダッシュボードを接続
+- **個人向けの意思決定を支援**: 登録スキルをもとに、求人とのマッチ率、スキルギャップ、想定年収を可視化
+- **運用を意識した設計**: Swagger による API ドキュメント、Winston による構造化ログ、GitHub Actions による定期処理を導入
+- **AI をプロダクト機能として活用**: Azure OpenAI を用いて求人市場の傾向をコメントとして生成し、数値だけでは読み取りにくい変化を補足
+
+---
+
 ## 主な機能
 
   |カテゴリ|機能内容|
@@ -183,7 +192,6 @@ VITE_API_URL=https://ai-job-dashboard-ztxo.onrender.com
 - WebSocketによるリアルタイム求人更新通知
 - PDF / CSVレポート自動出力
 - MLモデル再学習の自動トリガー
-- ユーザー認証（Supabase Auth + JWT）
 - MLOps パイプライン整備（GitHub Actions + Python + Supabase）
 - LangChain + Supabase Vector Store による過去トレンド参照型AI提案
 

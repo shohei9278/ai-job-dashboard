@@ -43,7 +43,12 @@ useEffect(() => {
       }
     } catch (err: any) {
       // ✅ 401の場合は“未ログイン扱い”だけにして user は保持しない
-      if (err?.response?.status === 401) {
+      const isUnauthorized =
+        err?.response?.status === 401 ||
+        err?.status === 401 ||
+        err?.message === "Unauthorized";
+
+      if (isUnauthorized) {
         console.warn("AuthContext: not logged in yet");
       } else {
         console.error("AuthContext init error:", err);

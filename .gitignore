@@ -32,6 +32,13 @@ build/
 .env.development.local
 .env.production.local
 
+# --- Local database dumps and imported data ---
+latest_supabase_dump.sql
+supabase_data_only.sql
+supabase_dump.sql
+jobs_rows.sql
+data/
+
 # --- Coverage / reports ---
 coverage/
 *.lcov
