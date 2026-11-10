@@ -42,6 +42,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
       JSON.stringify(errorResponse),
     );
 
+    // ルートの Cache-Control を上書きし、エラーをブラウザに残さない
+    response.setHeader('Cache-Control', 'no-store');
+
     // クライアントに返す
     response.status(status).json(errorResponse);
   }

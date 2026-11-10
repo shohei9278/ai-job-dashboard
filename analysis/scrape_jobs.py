@@ -17,6 +17,7 @@ import psycopg2
 from datetime import date, timedelta
 import json
 import random
+import sys
 from urllib.parse import urlparse
 
 # ======================
@@ -214,6 +215,16 @@ def sanitize_job(job):
 # ======================
 # メイン処理
 # ======================
+# SerpAPI は「検索結果が0件」も error で返すので、失敗と区別する
+SERPAPI_NO_RESULTS = "hasn't returned any results"
+
+
+def raise_on_serpapi_error(results):
+    error = results.get("error")
+    if error and SERPAPI_NO_RESULTS not in error:
+        raise RuntimeError(f"SerpAPI エラー: {error}")
+
+
 def get_job_count_for_pref(keyword: str, max_pages=5):
     total_count = 0
     today = date.today().isoformat()
@@ -232,6 +243,7 @@ def get_job_count_for_pref(keyword: str, max_pages=5):
     while page < max_pages:
         search = GoogleSearch(params)
         results = search.get_dict()
+        raise_on_serpapi_error(results)
         jobs_total = results.get("jobs_results", [])
 
         if not jobs_total:
@@ -273,12 +285,18 @@ def get_job_count_for_pref(keyword: str, max_pages=5):
 
 
 def main():
+    failed_keywords = []
     for keyword in KEYWORDS:
         try:
             get_job_count_for_pref(keyword)
         except Exception as e:
             print(f"{keyword} でエラー: {e}")
+            failed_keywords.append(keyword)
             time.sleep(3)
+
+    if failed_keywords:
+        print(f"収集に失敗したキーワード: {', '.join(failed_keywords)}")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
